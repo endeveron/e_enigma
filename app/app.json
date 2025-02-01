@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Enigma",
+    "slug": "enigma",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon_colored.png",
+        "monochromeImage": "./assets/images/icon_monochrome.png",
+        "backgroundColor": "#070d17"
+      },
+      "package": "com.enigmatium.enigma",
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#070d17",
+          "image": "./assets/images/icon_colored.png",
+          "imageWidth": 256
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ea11e50d-dc0d-41b5-8363-c7eb3c8c50f0"
+      }
+    },
+    "owner": "enigmatium"
+  }
+}
