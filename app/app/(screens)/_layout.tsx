@@ -24,26 +24,26 @@ export default function ScreensLayout() {
 
   return (
     <ChatProvider>
-      {/* <SocketProvider> */}
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        {screens.map((screen: Screen) => (
-          <Stack.Screen
-            key={screen.name}
-            name={screen.name}
-            options={{
-              // presentation: 'modal',
-              // title: screen.title,
-              headerShown: false,
-              contentStyle: { backgroundColor: background },
-            }}
-          />
-        ))}
-      </Stack>
-      {/* </SocketProvider> */}
+      <SocketProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {screens.map((screen: Screen) => (
+            <Stack.Screen
+              key={screen.name}
+              name={screen.name}
+              options={{
+                // presentation: 'modal',
+                // title: screen.title,
+                headerShown: false,
+                contentStyle: { backgroundColor: background },
+              }}
+            />
+          ))}
+        </Stack>
+      </SocketProvider>
     </ChatProvider>
   );
 }

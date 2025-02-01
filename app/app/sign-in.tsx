@@ -27,7 +27,6 @@ import {
   createRoomTable,
   deleteAllTables,
 } from '@/core/functions/db';
-import { getSharedKeyUnit8Arr } from '@/core/functions/encryption';
 import {
   deleteSecureStoreItem,
   deleteStorageItem,
@@ -35,11 +34,9 @@ import {
   setSecureStoreItem,
 } from '@/core/functions/store';
 import { reset } from '@/core/services/chat';
-import { useTestSocket } from '@/core/context/TestSocketProvider';
 
 const SignIn = () => {
   const { isLoading, signIn } = useSession();
-  const { getTestSocket } = useTestSocket();
   const { showToast } = useToast();
   const { control, handleSubmit, setValue } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
@@ -131,21 +128,7 @@ const SignIn = () => {
     }
   };
 
-  const runDev = async () => {
-    try {
-      const socket = getTestSocket();
-      if (!socket) {
-        logMessage(`[ SIS ] Unable to get socket instance`, 'error');
-        return;
-      }
-      socket.emit('test', 'test');
-      logMessage(`[ SIS ] Socket test event sent`);
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
-
-  // const getData = async () => {
+  // const runDev = async () => {
   //   try {
   //   } catch (err: any) {
   //     console.error(err);
@@ -220,16 +203,11 @@ const SignIn = () => {
         </View>
 
         <View className="flex-col items-center gap-4 mt-10">
-          <Button
-            variant="secondary"
-            title="Test Socket"
-            handlePress={runDev}
-          />
           <Button variant="secondary" title="Reset" handlePress={resetData} />
           {/* <Button
             variant="secondary"
-            title="Check Keys"
-            handlePress={getData}
+            title="Dev"
+            handlePress={runDev}
           /> */}
         </View>
       </View>

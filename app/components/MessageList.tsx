@@ -83,13 +83,13 @@ const MessageList = ({ messages, userId, timestamp }: MessageListProps) => {
   useEffect(() => {
     initData();
 
-    const timeout = setTimeout(() => {
+    const timerId = setTimeout(() => {
       scrollToEnd();
-      clearTimeout(timeout);
+      clearTimeout(timerId);
     }, 500);
 
     return () => {
-      timeout && clearTimeout(timeout);
+      timerId && clearTimeout(timerId);
     };
   }, [messages]);
 

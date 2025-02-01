@@ -12,8 +12,10 @@ const ScreenNotification = ({ message, delay }: ScreenNotificationProps) => {
 
   useEffect(() => {
     if (delay) {
-      const timeout = setTimeout(() => setShowContent(true), delay);
-      return () => clearTimeout(timeout);
+      const timerId = setTimeout(() => setShowContent(true), delay);
+      return () => {
+        timerId && clearTimeout(timerId);
+      };
     }
 
     setShowContent(true);

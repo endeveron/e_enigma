@@ -39,9 +39,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   const userId = session!.user.id;
 
   const initSocket = (): Socket => {
-    const socketUrl = SERVER_URL.replace('https', 'wss');
-    const s = io(socketUrl, {
-      transports: ['websocket'],
+    const s = io(SERVER_URL, {
       query: { userId },
     });
     socketRef.current = s;

@@ -115,7 +115,9 @@ export default function HomeScreen() {
       }
     }, 1000);
 
-    return () => clearTimeout(timerId);
+    return () => {
+      timerId && clearTimeout(timerId);
+    };
   }, [isData, isOnlyInvitations]);
 
   if (fetching)

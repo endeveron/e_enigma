@@ -15,7 +15,6 @@ import { colors } from '@/core/constants/colors';
 import EventProvider from '@/core/context/EventProvider';
 import LocalDBProvider from '@/core/context/LocalDBProvider';
 import SessionProvider from '@/core/context/SessionProvider';
-import TestSocketProvider from '@/core/context/TestSocketProvider';
 import { useTheme } from '@/core/hooks/useTheme';
 import { Screen } from '@/core/types/common';
 
@@ -80,29 +79,27 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
-        <TestSocketProvider>
-          <LocalDBProvider>
-            <EventProvider>
-              <SessionProvider>
-                <Stack>
-                  {screens.map((screen: Screen) => (
-                    <Stack.Screen
-                      key={screen.name}
-                      name={screen.name}
-                      options={{
-                        headerShown: false,
-                        contentStyle: {
-                          backgroundColor: colors[theme].background,
-                        },
-                      }}
-                    />
-                  ))}
-                </Stack>
-                <StatusBar />
-              </SessionProvider>
-            </EventProvider>
-          </LocalDBProvider>
-        </TestSocketProvider>
+        <LocalDBProvider>
+          <EventProvider>
+            <SessionProvider>
+              <Stack>
+                {screens.map((screen: Screen) => (
+                  <Stack.Screen
+                    key={screen.name}
+                    name={screen.name}
+                    options={{
+                      headerShown: false,
+                      contentStyle: {
+                        backgroundColor: colors[theme].background,
+                      },
+                    }}
+                  />
+                ))}
+              </Stack>
+              <StatusBar />
+            </SessionProvider>
+          </EventProvider>
+        </LocalDBProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
   );

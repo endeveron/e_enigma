@@ -18,9 +18,9 @@ const initSocketServer = (httpServer: any): Server => {
     },
   });
 
-  if (io) {
-    logger.b(`✔️ Socket server initialized`);
-  }
+  // if (io) {
+  //   logger.b(`✔️ Socket server initialized`);
+  // }
 
   io.on('connection', (socket) => {
     logger.b(`✔️ Socket connection`);
