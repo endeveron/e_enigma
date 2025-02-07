@@ -33,8 +33,8 @@ import {
 const SessionContext = createContext<TSessionContext>({
   session: null,
   isLoading: false,
-  signUp: async (args: AuthCredentials) => false,
-  signIn: async (args: AuthCredentials) => false,
+  signUp: async (args: AuthCredentials) => null,
+  signIn: async (args: AuthCredentials) => null,
   signOut: async () => {},
 });
 
@@ -147,12 +147,17 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
     name,
     email,
     password,
-  }: AuthCredentials): Promise<boolean | undefined> => {
+  }: AuthCredentials): Promise<string | null> => {
+    const errMsg = 'Unable to register';
     try {
       setIsLoading(true);
 
       // Generate encryption keys
       const keyPair = generateEncryptionKeys();
+      if (!keyPair) {
+        setIsLoading(false);
+        return 'Unable to generate keys';
+      }
 
       // Send request to the server
       const result = await postSignUp({
@@ -163,46 +168,43 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
       });
       setIsLoading(false);
       if (result?.error) {
-        showToast(result.error.message);
-        console.error(result.error.message);
-        return false;
+        return result.error.message;
       }
       if (result?.data) {
         const authSuccess = await saveAuthData(result.data);
         const keysSuccess = await saveKeysInSecureStore(keyPair);
         const userListSuccess = await createUserIdListInSecureStore();
-        // result.data.user.id
-        return authSuccess && keysSuccess && userListSuccess;
+        return authSuccess && keysSuccess && userListSuccess ? null : errMsg;
       }
+
+      return errMsg;
     } catch (error: any) {
-      showToast(error.message);
-      console.error(error.message);
-      return false;
+      console.error(error);
+      return error.message ?? errMsg;
     }
   };
 
   const signIn = async ({
     email,
     password,
-  }: AuthCredentials): Promise<boolean | undefined> => {
+  }: AuthCredentials): Promise<string | null> => {
+    const errMsg = 'Unable to login';
     try {
       setIsLoading(true);
       const result = await postSignIn({ email, password });
       setIsLoading(false);
 
       if (result?.error) {
-        showToast(result.error.message);
-        console.error(result.error.message);
-        return false;
+        return result.error.message;
       }
       if (result?.data) {
         await saveAuthData(result.data);
-        return true;
+        return null;
       }
+      return errMsg;
     } catch (error: any) {
-      showToast(error.message);
-      console.error(error.message);
-      return false;
+      console.error(error);
+      return error.message ?? errMsg;
     }
   };
 

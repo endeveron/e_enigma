@@ -16,9 +16,8 @@ type Props = {
 const RoomItem = ({ data, roomMemberMap }: Props) => {
   const router = useRouter();
 
-  const accentColor = useThemeColor('accent');
-  const brandColor = useThemeColor('brand');
-  const cardColor = useThemeColor('card');
+  const cardAltColor = useThemeColor('cardAlt');
+  const textAltColor = useThemeColor('textAlt');
 
   if (!roomMemberMap.size) return null;
 
@@ -46,34 +45,34 @@ const RoomItem = ({ data, roomMemberMap }: Props) => {
         {/* Avatar */}
         <View
           className="flex-col w-16 h-16 items-center justify-center rounded-full"
-          style={{ backgroundColor: brandColor }}
+          style={{ backgroundColor: cardAltColor }}
         >
           <Text className="text-2xl font-pbold">{avatarLetter}</Text>
         </View>
 
         {/* Room title */}
         <View className="flex-1">
-          <Text colorName="accent" className="text-xl font-psemibold">
+          <Text colorName="textAlt" className="text-xl font-pbold">
             {title}
           </Text>
         </View>
 
-        {/* New messages count */}
-        {newMsgCount > 0 ? (
+        {/* New messages marker */}
+        {newMsgCount > 0 && (
           <View
             className="flex-row h-4 w-4 items-center justify-center rounded-full mr-1"
             // style={{ backgroundColor: cardColor }}
           >
-            {/* <Text colorName="accent" className="font-psemibold">
+            {/* <Text className="font-psemibold">
               {newMsgCount}
             </Text> */}
 
             <View
               className="h-2 w-2 rounded-full"
-              style={{ backgroundColor: accentColor }}
+              style={{ backgroundColor: textAltColor }}
             ></View>
           </View>
-        ) : null}
+        )}
       </View>
     </TouchableOpacity>
   );

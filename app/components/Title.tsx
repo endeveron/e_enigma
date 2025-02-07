@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-
 import { Text } from '@/components/Text';
 
 type Props = {
@@ -9,7 +8,9 @@ type Props = {
 const Title = ({ title }: Props) => {
   return (
     <View>
-      <Text className="font-psemibold text-xl">{title}</Text>
+      <Text colorName="title" className="font-psemibold">
+        {title}
+      </Text>
     </View>
   );
 };

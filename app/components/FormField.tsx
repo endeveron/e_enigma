@@ -41,9 +41,12 @@ export const FormField = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const isPasswordField = name === 'password' || name === 'confirm';
+
   const textColor = useThemeColor('text');
   const redColor = useThemeColor('red');
   const mutedColor = useThemeColor('muted');
+  const inactiveColor = useThemeColor('inactive');
   const cardColor = useThemeColor('card');
 
   const nultiline = numberOfLines > 1;
@@ -61,11 +64,11 @@ export const FormField = ({
 
   return (
     <View className={`${containerClassName}`}>
-      {!!label ? (
+      {!!label && (
         <Text colorName="muted" className="font-pmedium mb-3">
           {label}
         </Text>
-      ) : null}
+      )}
 
       <View
         style={{
@@ -80,18 +83,18 @@ export const FormField = ({
           style={{ color: textColor }}
           value={value}
           placeholder={placeholder}
-          placeholderTextColor={mutedColor}
+          placeholderTextColor={inactiveColor}
           onChangeText={handleChangeText}
           onBlur={onBlur}
           multiline={nultiline}
           numberOfLines={numberOfLines}
           textAlignVertical={nultiline ? 'top' : 'center'}
-          secureTextEntry={name === 'password' && !showPassword}
+          secureTextEntry={isPasswordField && !showPassword}
           keyboardType={keyboardType}
           autoFocus={autoFocus}
         />
 
-        {name === 'password' ? (
+        {isPasswordField && (
           <TouchableOpacity
             className="opacity-40"
             onPress={() => setShowPassword(!showPassword)}
@@ -102,9 +105,9 @@ export const FormField = ({
               color={mutedColor}
             />
           </TouchableOpacity>
-        ) : null}
+        )}
       </View>
-      {!!error ? <FormErrorMessage>{error.message}</FormErrorMessage> : null}
+      {!!error && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </View>
   );
 };

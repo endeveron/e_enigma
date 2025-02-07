@@ -11,11 +11,11 @@ const ScreenHeaderContainer = ({ children, bgImage }: Props) => {
       <View className="relative flex-1 flex-col-reverse p-6 pt-14 z-10">
         {children}
       </View>
-      {bgImage ? (
+      {bgImage && (
         <View className="absolute inset-x-0 inset-y-0 overflow-hidden z-0">
           {bgImage}
         </View>
-      ) : null}
+      )}
     </View>
   );
 };

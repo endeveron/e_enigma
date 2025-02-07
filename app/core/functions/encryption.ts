@@ -4,7 +4,7 @@ import {
 } from '@stablelib/base64';
 import { decode as decodeUTF8, encode as encodeUTF8 } from '@stablelib/utf8';
 import * as Crypto from 'expo-crypto';
-import { box, randomBytes } from 'tweetnacl';
+import { box, randomBytes, setPRNG } from 'tweetnacl';
 
 import { KEY_SECRET_KEY, KEY_USER_ID_LIST } from '@/core/constants/store';
 import { logMessage } from '@/core/functions/helpers';
@@ -16,25 +16,23 @@ import {
   MessageItem,
 } from '@/core/types/chat';
 
-const newNonce = () => randomBytes(box.nonceLength);
-export const generateKeyPair = () => box.keyPair();
-
-export const PRNG = (x: Uint8Array, n: number) => {
+// Set the PRNG for tweetnacl
+setPRNG((x: Uint8Array, n: number) => {
   const randomBytes = Crypto.getRandomBytes(n);
   for (let i = 0; i < n; i++) {
     x[i] = randomBytes[i];
   }
-};
+});
+
+export const generateKeyPair = () => box.keyPair();
 
 export const base64StringToUint8Array = (base64String: string): Uint8Array => {
   const binaryString = atob(base64String);
   const length = binaryString.length;
   const array = new Uint8Array(length);
-
   for (let i = 0; i < length; i++) {
     array[i] = binaryString.charCodeAt(i);
   }
-
   return array;
 };
 
@@ -44,6 +42,9 @@ export const uint8ArrayToBase64String = (uint8Array: Uint8Array): string => {
 
 export const generateEncryptionKeys = () => {
   const keyData = generateKeyPair();
+  if (!keyData) {
+    return null;
+  }
   return {
     publicKeyBase64: uint8ArrayToBase64String(keyData.publicKey),
     secretKeyBase64: uint8ArrayToBase64String(keyData.secretKey),
@@ -55,7 +56,7 @@ export const encrypt = (
   json: any,
   key?: Uint8Array
 ) => {
-  const nonce = newNonce();
+  const nonce = randomBytes(box.nonceLength);
   const messageUint8 = encodeUTF8(JSON.stringify(json));
   const encrypted = key
     ? box(messageUint8, nonce, key, secretOrSharedKey)
@@ -231,26 +232,4 @@ export const decryptMessages = async (
   return messages;
 };
 
-export const doEncryption = () => {
-  const obj = { hello: 'world' };
-
-  const senderKeys = generateEncryptionKeys();
-  const recipientKeys = generateEncryptionKeys();
-
-  const senderPublicKey = base64StringToUint8Array(senderKeys.publicKeyBase64);
-  const senderSecretKey = base64StringToUint8Array(senderKeys.secretKeyBase64);
-  const recipientPublicKey = base64StringToUint8Array(
-    recipientKeys.publicKeyBase64
-  );
-  const recipientSecretKey = base64StringToUint8Array(
-    recipientKeys.secretKeyBase64
-  );
-
-  // Sender
-  const senderSharedKey = box.before(recipientPublicKey, senderSecretKey);
-  const encrypted = encrypt(senderSharedKey, obj);
-
-  // Recipient
-  const recipientSharedKey = box.before(senderPublicKey, recipientSecretKey);
-  const decrypted = decrypt(recipientSharedKey, encrypted);
-};
+export const encryptString = () => {};

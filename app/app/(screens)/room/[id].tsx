@@ -2,7 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { setPRNG } from 'tweetnacl';
+// import { setPRNG } from 'tweetnacl';
 
 import MessageInput from '@/components/MessageInput';
 import MessageList from '@/components/MessageList';
@@ -12,7 +12,7 @@ import { useSession } from '@/core/context/SessionProvider';
 import { useSocket } from '@/core/context/SocketProvider';
 import { updateRoomMessages } from '@/core/functions/chat';
 import { getRoomMessages, updateMessagesMetadata } from '@/core/functions/db';
-import { PRNG } from '@/core/functions/encryption';
+// import { PRNG } from '@/core/functions/encryption';
 import { logMessage } from '@/core/functions/helpers';
 import {
   MessageEventData,
@@ -21,8 +21,10 @@ import {
   MessageType,
 } from '@/core/types/chat';
 import { postUpdateMessagesMetadata } from '@/core/services/chat';
+import { Image } from 'expo-image';
+import NavBack from '@/components/NavBack';
 
-setPRNG(PRNG);
+// setPRNG(PRNG);
 
 const ChatRoomScreen = () => {
   const searchParams = useLocalSearchParams();
@@ -214,24 +216,40 @@ const ChatRoomScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior="padding" // important
-      // contentContainerStyle={{ flex: 1 }}
       style={{ flex: 1 }}
     >
-      <View className="flex-1">
-        {roomTitle && (
-          <View className="mt-10 flex-row items-center justify-center">
-            <Text colorName="accent" className="font-pbold text-3xl py-4">
-              {roomTitle}
-            </Text>
-          </View>
-        )}
-        {messages && (
-          <MessageList
-            messages={messages}
-            userId={userId}
-            timestamp={timestamp}
+      <View className="flex-1 relative">
+        {/* Main content */}
+        <View className="flex-1 relative z-10">
+          {roomTitle && (
+            <View className="relative mt-10 flex-row items-center justify-center">
+              {/* Nav Back */}
+              <View className="absolute top-0 left-2 w-10 h-full">
+                <NavBack />
+              </View>
+
+              <Text colorName="textAlt" className="font-pbold text-3xl py-4">
+                {roomTitle}
+              </Text>
+            </View>
+          )}
+          {messages && (
+            <MessageList
+              messages={messages}
+              userId={userId}
+              timestamp={timestamp}
+            />
+          )}
+        </View>
+
+        {/* Background image */}
+        <View className="absolute flex-1 items-center justify-center inset-x-0 inset-y-0 z-0">
+          <Image
+            style={{ height: 160, width: 160 }}
+            source={require('@/assets/images/background_logo.svg')}
+            // transition={1000}
           />
-        )}
+        </View>
       </View>
       <MessageInput onSubmit={handleMessageInputSubmit} />
     </KeyboardAvoidingView>

@@ -1,10 +1,9 @@
 {
-  "name": "mod",
+  "name": "enigma-messenger",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -17,12 +16,12 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@hookform/resolvers": "^3.10.0",
-    "@react-native-async-storage/async-storage": "^2.1.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
     "@stablelib/base64": "^2.0.1",
     "@stablelib/utf8": "^2.0.1",
-    "expo": "~52.0.28",
+    "expo": "^52.0.31",
     "expo-blur": "~14.0.3",
     "expo-clipboard": "^7.0.1",
     "expo-constants": "~17.0.5",
@@ -35,16 +34,16 @@
     "expo-router": "~4.0.17",
     "expo-secure-store": "^14.0.1",
     "expo-splash-screen": "~0.29.21",
-    "expo-sqlite": "^15.1.1",
+    "expo-sqlite": "~15.1.2",
     "expo-status-bar": "~2.0.1",
-    "expo-symbols": "~0.2.1",
-    "expo-system-ui": "~4.0.7",
+    "expo-symbols": "~0.2.2",
+    "expo-system-ui": "~4.0.8",
     "expo-web-browser": "~14.0.2",
     "nativewind": "^4.1.23",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.54.2",
-    "react-native": "0.76.6",
+    "react-native": "0.76.7",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-keyboard-controller": "^1.16.1",
     "react-native-mmkv": "^3.2.0",
@@ -69,5 +68,12 @@
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  }
 }

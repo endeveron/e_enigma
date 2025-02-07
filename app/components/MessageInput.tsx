@@ -14,8 +14,9 @@ const MessageInput = ({ onSubmit, placeholder }: Props) => {
   const [value, setValue] = useState('');
 
   const textColor = useThemeColor('text');
-  const accentBackgroundColor = useThemeColor('accentBackground');
+  const cardColor = useThemeColor('card');
   const mutedColor = useThemeColor('muted');
+  const inactiveColor = useThemeColor('inactive');
 
   const clearTextInput = () => {
     setValue('');
@@ -27,29 +28,28 @@ const MessageInput = ({ onSubmit, placeholder }: Props) => {
   };
 
   return (
-    <View className="relative flex-row items-center justify-between pr-24 pl-5">
+    <View
+      className="h-16 relative flex-row items-center justify-between pr-28 pl-5"
+      style={{ backgroundColor: cardColor }}
+    >
       <TextInput
-        className="h-16 w-full font-pmedium text-xl mb-2"
-        style={{ color: textColor }}
+        className="h-16 w-full font-psemibold"
+        style={{ color: textColor, fontSize: 18 }}
         value={value}
-        placeholder={placeholder ?? 'Type a message...'}
-        placeholderTextColor={mutedColor}
+        placeholder={placeholder ?? 'Share your thoughts...'}
+        placeholderTextColor={inactiveColor}
         onChangeText={setValue}
         textAlignVertical="center"
         onSubmitEditing={handleSubmitTextInput}
         // autoFocus={true}
       />
       {value && (
-        <View className="flex-row absolute right-2 bottom-2 items-center gap-8">
+        <View className="flex-row absolute right-2 items-center gap-8">
           <TouchableOpacity
             className="h-16 w-6 flex-row items-center justify-center animate-fade-in"
             onPress={handleSubmitTextInput}
           >
-            <FontAwesomeIcon
-              size={18}
-              name="send"
-              color={accentBackgroundColor}
-            />
+            <FontAwesomeIcon size={18} name="send" color={textColor} />
           </TouchableOpacity>
           <TouchableOpacity
             className="h-16 w-6 flex-row items-center justify-center animate-fade-in"

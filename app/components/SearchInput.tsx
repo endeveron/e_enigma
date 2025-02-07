@@ -10,11 +10,11 @@ export type SearchInputProps = {
 };
 
 const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
-  const [value, setValue] = useState('admin@dev.com');
+  const [value, setValue] = useState('');
 
   const textColor = useThemeColor('text');
-  const accentColor = useThemeColor('accent');
-  const mutedColor = useThemeColor('muted');
+  const cardColor = useThemeColor('card');
+  const inactiveColor = useThemeColor('inactive');
 
   const handleSearch = () => {
     if (!value.trim()) return;
@@ -23,17 +23,20 @@ const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
   };
 
   return (
-    <View className="relative flex-row items-center justify-between pr-24 pl-5 mt-14">
+    <View
+      className="h-16 relative flex-row items-center justify-between pr-14 pl-5"
+      style={{ backgroundColor: cardColor }}
+    >
       <TextInput
         className="h-16 w-full font-pmedium text-xl"
         style={{ color: textColor }}
         value={value}
         placeholder={placeholder || 'Find something...'}
-        placeholderTextColor={mutedColor}
+        placeholderTextColor={inactiveColor}
         onChangeText={setValue}
         textAlignVertical="center"
         onSubmitEditing={handleSearch}
-        autoFocus={true}
+        // autoFocus={true}
       />
       {value && (
         <View className="flex-row absolute right-4 items-center gap-6">
@@ -41,7 +44,7 @@ const SearchInput = ({ onSearch, placeholder }: SearchInputProps) => {
             className="h-16 w-6 flex-row items-center justify-center animate-fade-in mb-1"
             onPress={handleSearch}
           >
-            <FeatherIcon size={24} name="search" color={accentColor} />
+            <FeatherIcon size={24} name="search" color={textColor} />
           </TouchableOpacity>
 
           {/* <TouchableOpacity

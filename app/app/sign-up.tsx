@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Image } from 'expo-image';
 import { Link, router } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
@@ -9,15 +10,15 @@ import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
 import { Text } from '@/components/Text';
 import {
-  AUTH_NAME,
   AUTH_EMAIL,
+  AUTH_NAME,
   AUTH_PASSWORD,
   DEFAULT_REDIRECT_URL,
 } from '@/core/constants';
 import { useSession } from '@/core/context/SessionProvider';
 import { logMessage } from '@/core/functions/helpers';
 import { useToast } from '@/core/hooks/useToast';
-import { signUpSchema, SignUpFormData } from '@/core/utils/validation';
+import { SignUpFormData, signUpSchema } from '@/core/utils/validation';
 
 const SignUp = () => {
   const { isLoading, signUp } = useSession();
@@ -37,17 +38,22 @@ const SignUp = () => {
     data: SignUpFormData
   ) => {
     try {
-      const registered = await signUp({
+      const errorMessage = await signUp({
         name: data.name,
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: data.password,
       });
-      if (registered) {
-        logMessage('[ AUT ] Signed up');
-        router.replace(DEFAULT_REDIRECT_URL);
+      if (errorMessage) {
+        showToast(errorMessage);
+        logMessage(`[ AUT ] Unable to register: ${errorMessage}`, 'error');
+        return;
       }
+
+      // Success, redirect to DEFAULT_REDIRECT_URL
+      logMessage('[ AUT ] Signed up');
+      router.replace(DEFAULT_REDIRECT_URL);
     } catch (error: any) {
-      showToast('Unable to register');
+      showToast('Something went wrong. Please try again later');
       logMessage(
         `[ AUT ] Sign up error: ${error.message || JSON.stringify(error)}`,
         'error'
@@ -59,13 +65,21 @@ const SignUp = () => {
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
     >
-      <View className="pt-20 p-4">
-        <Text colorName="accent" className="text-3xl font-pbold text-center">
-          Sign Up
-        </Text>
-        <Text colorName="muted" className="font-psemibold text-center mt-4">
-          Create your account
-        </Text>
+      <View className="py-20 px-4">
+        <View className="flex-col items-center">
+          <Image
+            style={{ height: 128, width: 128 }}
+            source={require('@/assets/images/logo.svg')}
+            // transition={250}
+          />
+          <Text colorName="textAlt" className="text-4xl font-pbold my-3">
+            Sign Up
+          </Text>
+          <Text colorName="muted" className="font-psemibold">
+            Create your account
+          </Text>
+        </View>
+
         <Controller
           control={control}
           render={({
@@ -131,12 +145,17 @@ const SignUp = () => {
           containerClassName="mt-8"
           isLoading={isLoading}
         />
-        <View className="flex flex-row items-end justify-center py-8">
-          <Text colorName="muted" className="font-pmedium py-4">
-            Have an account ?
-          </Text>
-          <Link href="/sign-in" className="ml-2 p-4">
-            <Text colorName="accent" className="font-pmedium text-lg">
+
+        <View className="flex flex-col items-center justify-center py-8">
+          <Link
+            href="/sign-in"
+            className="flex flex-row items-end justify-center p-4"
+          >
+            <Text colorName="muted" className="font-pmedium">
+              Have an account ?
+            </Text>
+            <View className="w-4"></View>
+            <Text colorName="textAlt" className="font-pmedium text-lg ">
               Log In
             </Text>
           </Link>

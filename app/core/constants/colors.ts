@@ -2,30 +2,31 @@ export const defaultTheme = 'dark';
 
 const white = '#fff';
 const black = '#000';
-const accentBackground = '#ffd6ad';
+const muted = '#0284C7'; // sky 600
+const card = '#001a2b';
 
-const monoColors = {
+const colorSet = {
   white,
-  text: '#F6F6FA',
-  background: '#070d17',
-  card: '#131a29',
-  brand: '#002d66',
-  accent: '#ffe4c9',
-  accentBackground,
+  text: '#7DD3FC', // sky 300
+  title: '#2DD4BF', // teal 400
+  textAlt: '#67E8F9', // cyan 300
+  muted,
+  background: '#000812',
+  card,
+  cardAlt: '#002b4f',
+  border: card,
+  inactive: '#4c6b8f',
+  red: '#FF245B',
 
   btnPrimaryText: black,
-  btnBrandText: white,
-  btnPrimaryBackground: accentBackground,
-  btnSecondaryText: white,
-
-  border: '#2c2f42',
-  red: '#ed1561',
-  muted: '#6e758a',
+  btnPrimaryBg: '#22D3EE', // cyan 400
+  btnSecondaryText: muted,
+  btnSecondaryBg: card,
 };
 
 export const colors = {
-  light: monoColors,
-  dark: monoColors,
+  light: colorSet,
+  dark: colorSet,
 };
 
 export const consoleClors = {

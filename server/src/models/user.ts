@@ -9,7 +9,7 @@ const userSchema = new Schema<User>(
         type: String,
         required: [true, 'User name is required'],
         minlength: [2, 'User name cannot contain less than 2 characters'],
-        maxlength: [20, 'User name cannot contain more than 20 characters'],
+        maxlength: [30, 'User name cannot contain more than 30 characters'],
       },
       email: {
         type: String,
@@ -33,7 +33,10 @@ const userSchema = new Schema<User>(
           required: [true, 'User role name is required'],
         },
       },
+      resetToken: { type: String },
+      resetTokenExpires: { type: Number },
     },
+    isOnline: { type: Boolean },
     publicKey: {
       type: String,
       required: [true, 'Public key is required'],

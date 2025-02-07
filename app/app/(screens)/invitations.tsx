@@ -1,6 +1,7 @@
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import InvitationItem from '@/components/InvitationItem';
+import NavBack from '@/components/NavBack';
 import Title from '@/components/Title';
 import { useChat } from '@/core/context/ChatProvider';
 import { useSession } from '@/core/context/SessionProvider';
@@ -50,17 +51,27 @@ const InvitationsScreen = () => {
 
   return (
     <View className="flex-1 pt-14 pb-4">
-      <View className="h-16 flex-row items-center px-4">
-        <Title title="Invitations" />
+      <View className="relative h-16 flex-row items-center px-4">
+        {/* Nav Back */}
+        <View className="absolute top-0 left-2 w-10 h-full">
+          <NavBack />
+        </View>
+
+        <View className="pl-10">
+          <Title title="Invitations" />
+        </View>
       </View>
-      {recievedInvitations.map((data) => (
-        <InvitationItem
-          data={data}
-          onAccept={() => handleAcceptInvitation(data)}
-          onReject={() => handleRejectInvitation(data)}
-          key={data.id}
-        />
-      ))}
+      <FlatList
+        data={recievedInvitations}
+        renderItem={(data) => (
+          <InvitationItem
+            data={data.item}
+            onAccept={() => handleAcceptInvitation(data.item)}
+            onReject={() => handleRejectInvitation(data.item)}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };

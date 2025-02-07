@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import ScreenNotification from '@/components/ScreenNotification';
 import UserListItem from '@/components/UserItem';
@@ -14,6 +14,8 @@ import SearchInput from '@/components/SearchInput';
 import { EventType, useEvent } from '@/core/context/EventProvider';
 import { useRouter } from 'expo-router';
 import { useToast } from '@/core/hooks/useToast';
+import Title from '@/components/Title';
+import NavBack from '@/components/NavBack';
 
 const SearchScreen = () => {
   const router = useRouter();
@@ -26,7 +28,7 @@ const SearchScreen = () => {
   const [sentInvitationMap, setSentInvitationMap] = useState<
     Map<string, InvitatoionMapItem>
   >(new Map());
-  const [items, setItems] = useState<UserItemExt[]>([]);
+  const [items, setItems] = useState<UserItemExt[] | null>(null);
 
   const token = session!.token;
   const userId = session!.user.id;
@@ -70,7 +72,7 @@ const SearchScreen = () => {
 
     if (prevMapSize - newMapSize === 1) {
       if (invitationAnswer) {
-        showToast(`Invitation ${invitationAnswer}`);
+        showToast(`Invitation ${invitationAnswer}`, true);
       }
       if (newMapSize === 0) {
         // Redirect if the invitations list is empty
@@ -120,31 +122,42 @@ const SearchScreen = () => {
   }, [event]);
 
   return (
-    <View>
+    <View className="flex-1 pt-14 pb-4">
+      <View className="relative h-16 flex-row items-center px-4">
+        {/* Nav Back */}
+        <View className="absolute top-0 left-2 w-10 h-full">
+          <NavBack />
+        </View>
+
+        <View className="pl-10">
+          <Title title="Create a room" />
+        </View>
+      </View>
       <SearchInput
         onSearch={handleSearch}
         placeholder="Find a chat buddy by email..."
       />
 
-      {fetching ? (
-        <ScreenNotification message="Please wait" delay={1500} />
-      ) : null}
+      {fetching && <ScreenNotification message="Please wait" delay={1500} />}
 
-      {items.length ? (
-        <View className="">
-          {items.map((userData: UserItemExt) => {
-            if (roomMemberMap.has(userData.id)) return null;
-            return (
-              <UserListItem
-                data={userData}
-                key={userData.id}
-                sentInvitationMap={sentInvitationMap}
-                onPress={handleInvite}
-              />
-            );
-          })}
-        </View>
-      ) : null}
+      {items && items.length === 0 && (
+        <ScreenNotification message="No matches found" delay={1000} />
+      )}
+
+      {items && items.length > 0 && (
+        <FlatList
+          className="py-2"
+          data={items}
+          renderItem={(data) => (
+            <UserListItem
+              data={data.item}
+              sentInvitationMap={sentInvitationMap}
+              onPress={handleInvite}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };

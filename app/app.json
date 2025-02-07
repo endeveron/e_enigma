@@ -2,10 +2,10 @@
   "expo": {
     "name": "Enigma",
     "slug": "enigma",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "enigma-messenger",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -15,7 +15,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon_colored.png",
         "monochromeImage": "./assets/images/icon_monochrome.png",
-        "backgroundColor": "#070d17"
+        "backgroundColor": "#000812"
       },
       "package": "com.enigmatium.enigma",
       "softwareKeyboardLayoutMode": "pan"
@@ -25,9 +25,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#070d17",
-          "image": "./assets/images/icon_colored.png",
-          "imageWidth": 256
+          "backgroundColor": "#000812",
+          "image": "./assets/images/logo.png",
+          "imageWidth": 192
         }
       ],
       "expo-secure-store",

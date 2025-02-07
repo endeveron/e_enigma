@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import RoomListItem from '@/components/RoomItem';
 import ScreenNotification from '@/components/ScreenNotification';
@@ -63,11 +63,13 @@ const RoomList = ({ roomItems }: RoomListProops) => {
   if (!items?.length) return <ScreenNotification message="No rooms" />;
 
   return (
-    <View className="flex-col">
-      {items.map((data) => (
-        <RoomListItem data={data} roomMemberMap={memberMap} key={data.id} />
-      ))}
-    </View>
+    <FlatList
+      data={items}
+      renderItem={(data) => (
+        <RoomListItem data={data.item} roomMemberMap={memberMap} />
+      )}
+      keyExtractor={(item) => item.id}
+    />
   );
 };
 

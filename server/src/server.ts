@@ -46,10 +46,6 @@ mongo
 
 // Listening to socket events
 io.on('connection', (socket) => {
-  socket.on('test', (data: string) => {
-    logger.g('socket: test', data);
-  });
-
   socket.on('invitation:answer', (data: InvitationAnswerData) => {
     handleInvitationAnswer(data);
   });

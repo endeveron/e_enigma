@@ -25,4 +25,5 @@ app/*.pem
 # server
 server/build/
 server/nodemon.json
+server/_nodemon.json
 server/google-sa.json

@@ -1,7 +1,6 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 
 import logger from '../helpers/logger';
-import { getTime } from '../helpers/date';
 
 const uri = process.env.DB_CONNECTION_STRING as string;
 const options = {};

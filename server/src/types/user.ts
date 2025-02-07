@@ -9,6 +9,8 @@ type UserAccount = {
     index: number;
     name: string;
   };
+  resetToken?: string;
+  resetTokenExpires?: number;
 };
 
 export type Statistics = {
@@ -20,6 +22,7 @@ export type User = {
   _id: ObjectId;
   account: UserAccount;
   publicKey: string;
+  isOnline?: boolean;
 };
 
 export type AuthData = {

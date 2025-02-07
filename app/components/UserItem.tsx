@@ -11,7 +11,7 @@ type Props = {
 };
 
 const UserItem = ({ data, sentInvitationMap, onPress }: Props) => {
-  const brandColor = useThemeColor('brand');
+  const cardAltColor = useThemeColor('cardAlt');
   const avatarLetter = data.name.at(0)?.toUpperCase();
   const isInvited = sentInvitationMap.has(data.id);
   const canInvite = data.isInvite && !isInvited;
@@ -21,31 +21,31 @@ const UserItem = ({ data, sentInvitationMap, onPress }: Props) => {
       {/* Avatar */}
       <View
         className="flex-col w-16 h-16 items-center justify-center rounded-full"
-        style={{ backgroundColor: brandColor }}
+        style={{ backgroundColor: cardAltColor }}
       >
         <Text className="text-2xl font-pbold">{avatarLetter}</Text>
       </View>
 
       {/* User name */}
       <View className="flex-1">
-        <Text colorName="accent" className="text-xl font-psemibold">
+        <Text colorName="textAlt" className="text-xl font-pbold">
           {data.name}
         </Text>
       </View>
 
-      {isInvited ? (
+      {isInvited && (
         <Text colorName="muted" className="font-psemibold text-lg">
           invitation sent
         </Text>
-      ) : null}
+      )}
 
-      {canInvite ? (
+      {canInvite && (
         <Button
           title="Invite"
           handlePress={() => onPress(data)}
-          variant="secondary"
+          // variant="secondary"
         />
-      ) : null}
+      )}
     </View>
   );
 };

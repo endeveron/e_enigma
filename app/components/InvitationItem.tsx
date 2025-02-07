@@ -13,26 +13,25 @@ type Props = {
 };
 
 const InvitationItem = ({ data, onAccept, onReject }: Props) => {
-  const brandColor = useThemeColor('brand');
   const cardColor = useThemeColor('card');
+  const cardAltColor = useThemeColor('cardAlt');
   const mutedColor = useThemeColor('muted');
 
   const avatarLetter = data.name.at(0)?.toUpperCase();
-  const roomCreatorId = data.id;
 
   return (
     <View className="flex-row items-center justify-between gap-2 pl-4 pr-2 py-2">
       {/* Avatar */}
       <View
         className="flex-col w-16 h-16 items-center justify-center rounded-full"
-        style={{ backgroundColor: brandColor }}
+        style={{ backgroundColor: cardAltColor }}
       >
         <Text className="text-2xl font-pbold">{avatarLetter}</Text>
       </View>
 
       {/* User name */}
       <View className="flex-1 ml-2">
-        <Text colorName="accent" className="text-xl font-psemibold">
+        <Text colorName="textAlt" className="text-xl font-pbold">
           {data.name}
         </Text>
       </View>

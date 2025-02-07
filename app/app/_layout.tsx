@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect } from 'react';
+import { Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import {
@@ -29,6 +30,7 @@ const screens: Screen[] = [
   { name: '(screens)' },
   { name: 'sign-in', title: 'Sign In' },
   { name: 'sign-up', title: 'Sign Up' },
+  { name: 'reset-password', title: 'Reset Password' },
   { name: '+not-found', title: 'Not Found' },
 ];
 
@@ -59,6 +61,9 @@ export default function RootLayout() {
   useEffect(() => {
     const prepareApp = async () => {
       try {
+        // Forcing dark mode by overriding system-wide theme settings (if applicable)
+        Appearance.setColorScheme('dark');
+
         // Change the root view background color
         await SystemUI.setBackgroundColorAsync(colors[theme].background);
 

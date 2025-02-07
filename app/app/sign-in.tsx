@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, router } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
@@ -34,6 +34,7 @@ import {
   setSecureStoreItem,
 } from '@/core/functions/store';
 import { reset } from '@/core/services/chat';
+import { Image } from 'expo-image';
 
 const SignIn = () => {
   const { isLoading, signIn } = useSession();
@@ -41,6 +42,8 @@ const SignIn = () => {
   const { control, handleSubmit, setValue } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   });
+
+  const [isDevMode, setIsDevMode] = useState(false);
 
   // fill out the form
   useEffect(() => {
@@ -51,24 +54,31 @@ const SignIn = () => {
   const onSubmit: SubmitHandler<SignInFormData> = async (
     data: SignInFormData
   ) => {
-    // signOut();
     try {
-      const loggedIn = await signIn({
-        email: data.email,
+      const errorMessage = await signIn({
+        email: data.email.toLowerCase(),
         password: data.password,
       });
-      if (loggedIn) {
-        logMessage('[ AUT ] Signed in', 'success');
-        router.replace(DEFAULT_REDIRECT_URL);
+      if (errorMessage) {
+        showToast(errorMessage);
+        logMessage(`[ AUT ] Unable to login: ${errorMessage}`, 'error');
+        return;
       }
+
+      // Success, redirect to DEFAULT_REDIRECT_URL
+      logMessage('[ AUT ] Logged in', 'success');
+      router.replace(DEFAULT_REDIRECT_URL);
     } catch (error: any) {
-      console.error(`SignIn: ${error}`);
-      showToast('Unable to login');
+      showToast('Something went wrong. Please try again later');
       logMessage(
         `[ AUT ] Sign in error: ${error.message || JSON.stringify(error)}`,
         'error'
       );
     }
+  };
+
+  const handleToggleDevMode = () => {
+    setIsDevMode((prev) => !prev);
   };
 
   const resetData = async () => {
@@ -128,24 +138,30 @@ const SignIn = () => {
     }
   };
 
-  // const runDev = async () => {
-  //   try {
-  //   } catch (err: any) {
-  //     console.error(err);
-  //   }
-  // };
-
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
     >
-      <View className="pt-20 p-4">
-        <Text colorName="accent" className="text-3xl font-pbold text-center">
-          Log In
-        </Text>
-        <Text colorName="muted" className="font-psemibold text-center mt-4">
-          Welcome back
-        </Text>
+      <View className="py-20 px-4">
+        <View className="flex-col items-center">
+          <Image
+            style={{ height: 128, width: 128 }}
+            source={require('@/assets/images/logo.svg')}
+            // transition={250}
+          />
+          <Text colorName="textAlt" className="text-4xl font-pbold my-3">
+            Log In
+          </Text>
+
+          <Text
+            onPress={handleToggleDevMode}
+            colorName="muted"
+            className="font-psemibold"
+          >
+            Welcome back
+          </Text>
+        </View>
+
         <Controller
           control={control}
           render={({
@@ -158,7 +174,7 @@ const SignIn = () => {
               value={value}
               onBlur={onBlur}
               handleChangeText={onChange}
-              containerClassName="mt-8"
+              containerClassName="mt-4"
               error={error}
               keyboardType="email-address"
               // autoFocus={true}
@@ -191,25 +207,35 @@ const SignIn = () => {
           containerClassName="mt-8"
           isLoading={isLoading}
         />
-        <View className="flex flex-row items-end justify-center py-8">
-          <Text colorName="muted" className="font-pmedium py-4">
-            Don't have an account?
-          </Text>
-          <Link href="/sign-up" className="ml-2 p-4">
-            <Text colorName="accent" className="font-pmedium text-lg">
+        <View className="flex flex-col items-center justify-center py-8">
+          <Link
+            href="/sign-up"
+            className="flex flex-row items-end justify-center p-4"
+          >
+            <Text colorName="muted" className="font-pmedium">
+              Don't have an account?
+            </Text>
+            <View className="w-4"></View>
+            <Text colorName="textAlt" className="font-pmedium text-lg ">
               Sign Up
+            </Text>
+          </Link>
+
+          <Link
+            href="/reset-password"
+            className="flex flex-row items-end justify-center p-4"
+          >
+            <Text colorName="muted" className="font-pmedium">
+              Forgot password?
             </Text>
           </Link>
         </View>
 
-        <View className="flex-col items-center gap-4 mt-10">
-          <Button variant="secondary" title="Reset" handlePress={resetData} />
-          {/* <Button
-            variant="secondary"
-            title="Dev"
-            handlePress={runDev}
-          /> */}
-        </View>
+        {isDevMode && (
+          <View className="flex-col items-center gap-4">
+            <Button variant="secondary" title="Reset" handlePress={resetData} />
+          </View>
+        )}
       </View>
     </KeyboardAwareScrollView>
   );

@@ -9,9 +9,9 @@ import SocketProvider from '@/core/context/SocketProvider';
 
 const screens: Screen[] = [
   { name: 'index', title: 'Messenger' },
+  { name: 'invitations', title: 'Invitations' },
   { name: 'room/[id]', title: 'Chat Room' },
   { name: 'search', title: 'Search' },
-  { name: 'invitations', title: 'Invitations' },
 ];
 
 export default function ScreensLayout() {

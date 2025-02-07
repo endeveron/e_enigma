@@ -1,4 +1,3 @@
-import AntDesignIcon from '@expo/vector-icons/AntDesign';
 import FeatherIcon from '@expo/vector-icons/Feather';
 import { useEffect } from 'react';
 import { View } from 'react-native';
@@ -27,8 +26,8 @@ const MessageItem = ({
   const { getSocket } = useSocket();
 
   const mutedColor = useThemeColor('muted');
-  const accentColor = useThemeColor('accent');
-  const userMsgBgColor = useThemeColor('brand');
+  const textColor = useThemeColor('text');
+  const userMsgBgColor = useThemeColor('cardAlt');
   const guestMsgBgColor = useThemeColor('card');
 
   const isSenderCurUser = senderId === userId;
@@ -99,32 +98,31 @@ const MessageItem = ({
         {isNewMessage && (
           <View
             className="absolute top-1 left-1 w-2 h-2 rounded-full"
-            style={{ backgroundColor: accentColor }}
+            style={{ backgroundColor: textColor }}
           ></View>
         )}
+
         {/* Text */}
-        <Text className={`font-plight text-lg`}>
+        <Text
+          colorName={isSenderCurUser ? 'text' : 'textAlt'}
+          className={`font-pmedium text-lg`}
+        >
           {data}
           <View className={`h-2 ${isSenderCurUser ? 'w-14' : 'w-10'}`}></View>
         </Text>
+
         {/* Meta data */}
-        <View className="absolute bottom-2 right-2 flex-row gap-1">
+        <View className="h-4 absolute bottom-2 right-2 flex-row gap-1">
           {/* Check mark */}
-          {isViewed ? (
-            <AntDesignIcon
-              size={12}
-              name="checkcircleo"
-              color={mutedColor}
-              className="translate-y-[2px] mr-[1px]"
-            />
-          ) : isRecieved ? (
-            <FeatherIcon
-              size={14}
-              name="check"
-              color={mutedColor}
-              className="translate-y-[2px]"
-            />
-          ) : null}
+          {isViewed ||
+            (isRecieved && (
+              <FeatherIcon
+                size={14}
+                name="check"
+                color={isViewed ? textColor : mutedColor}
+                className="translate-y-[2px]"
+              />
+            ))}
 
           {/* Time */}
           <Text

@@ -23,8 +23,8 @@ const ScreenNotification = ({ message, delay }: ScreenNotificationProps) => {
 
   return (
     showContent && (
-      <View className="flex-row justify-center py-20">
-        <Text colorName="muted" className="text-lg font-pregular">
+      <View className="flex-row justify-center py-16">
+        <Text colorName="inactive" className="text-lg font-pregular">
           {message}
         </Text>
       </View>

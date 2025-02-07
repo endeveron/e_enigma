@@ -38,7 +38,7 @@ export type AuthSession = UserAuthData | null;
 export type SessionContext = {
   session: AuthSession;
   isLoading: boolean;
-  signUp: (args: AuthCredentials) => Promise<boolean | undefined>;
-  signIn: (args: AuthCredentials) => Promise<boolean | undefined>;
+  signUp: (args: AuthCredentials) => Promise<string | null>;
+  signIn: (args: AuthCredentials) => Promise<string | null>;
   signOut: () => Promise<any>;
 };

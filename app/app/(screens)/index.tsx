@@ -2,6 +2,7 @@ import FeatherIcon from '@expo/vector-icons/Feather';
 import MaterialIcon from '@expo/vector-icons/MaterialIcons';
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { Image } from 'expo-image';
 
 import { Button } from '@/components/Button';
 import RoomList from '@/components/RoomList';
@@ -48,21 +49,6 @@ export default function HomeScreen() {
 
   // const handleOpenBottomSheet = () => {
   //   bottomSheetRef.current?.expand();
-  // };
-
-  // const getRoomsFromRemoteDb = async () => {
-  //   setFetching(true);
-  //   const roomsRes = await getDataFromRemoteDb(authData);
-  //   setFetching(false);
-  //   if (!roomsRes?.data) {
-  //     const errMsg = roomsRes?.error?.message ?? 'Unable to recieve rooms';
-  //     logMessage(`[ RML ] ${errMsg}`, 'error');
-  //     showToast('Unable to recieve data');
-  //     return;
-  //   }
-  //   logMessage(`[ RML ] Data fetched from remote db`);
-  //   // console.log(`[ F ] 2.1 RoomList > initData: Data fetched from remote db`);
-  //   setRoomItems(roomsRes.data);
   // };
 
   const handleOpenInvitations = () => {
@@ -124,11 +110,11 @@ export default function HomeScreen() {
     return <ScreenNotification message="Please wait" delay={1500} />;
 
   return (
-    <View className="relative flex-1 pt-14 pb-4">
+    <View className="flex-1 pt-14 pb-4">
       {/* No rooms */}
-      {!isRoomItems && (isNoData || isOnlyInvitations) ? (
-        <View className="pt-14 flex-1 flex-col items-center justify-center p-4">
-          <Text colorName="accent" className="text-4xl font-pbold mb-2">
+      {!isRoomItems && (isNoData || isOnlyInvitations) && (
+        <View className="pt-14 flex-1 flex-col items-center justify-center p-4 animate-fade-in">
+          <Text colorName="textAlt" className="text-4xl font-pbold mb-2">
             Hey, {userName}!
           </Text>
           <Text className="text-lg font-pregular my-4">
@@ -148,10 +134,10 @@ export default function HomeScreen() {
             }
           />
         </View>
-      ) : null}
+      )}
 
       {/* Invitations */}
-      {isRoomItems && isRecievedInvitations ? (
+      {isRoomItems && isRecievedInvitations && (
         <View className="h-16 flex-row items-center justify-between px-4">
           <Title title="Invitations" />
           <TouchableOpacity
@@ -162,21 +148,21 @@ export default function HomeScreen() {
               className="px-4 py-2 rounded-full -mr-2"
               style={{ backgroundColor: cardColor }}
             >
-              <Text colorName="accent" className="font-pbold text-xl">
+              <Text className="font-pbold text-xl">
                 {recievedInvitationsLength}
               </Text>
             </View>
           </TouchableOpacity>
         </View>
-      ) : null}
+      )}
 
       {/* Rooms */}
-      {isRoomItems ? (
+      {isRoomItems && (
         <>
           <View className="h-16 flex-row items-center justify-between px-4">
             <Title title="Rooms" />
             <TouchableOpacity
-              className="h-16 w-6 flex-row items-center justify-center animate-fade-in"
+              className="h-16 w-7 flex-row items-center justify-center animate-fade-in"
               onPress={handleOpenSearch}
             >
               <FeatherIcon size={24} name="plus" color={mutedColor} />
@@ -184,7 +170,7 @@ export default function HomeScreen() {
           </View>
           <RoomList roomItems={roomItems} />
         </>
-      ) : null}
+      )}
 
       {/* Sign Out */}
       <View className="absolute flex-row bottom-6 right-4 opacity-80">
@@ -195,16 +181,6 @@ export default function HomeScreen() {
           <MaterialIcon size={22} name="logout" color={mutedColor} />
         </TouchableOpacity>
       </View>
-
-      {/* Background image */}
-      {/* <View className="absolute flex-1 items-center justify-center h-full w-full inset-x-0 inset-y-0 z-10">
-        <Image
-          style={{ flex: 1, width: '100%' }}
-          source={bgImgSource}
-          contentFit="cover"
-          transition={500}
-        />
-      </View> */}
     </View>
   );
 }

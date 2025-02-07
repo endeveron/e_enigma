@@ -1,6 +1,7 @@
 import { Server, Socket } from 'socket.io';
 
 import logger from '../helpers/logger';
+import { updateUserOnlineStatus } from '../functions/user';
 
 let io: Server | undefined;
 const initErrMsg = 'Socket server not initialized';
@@ -18,20 +19,17 @@ const initSocketServer = (httpServer: any): Server => {
     },
   });
 
-  // if (io) {
-  //   logger.b(`✔️ Socket server initialized`);
-  // }
-
   io.on('connection', (socket) => {
-    logger.b(`✔️ Socket connection`);
-
     // Get userId from the query parameters sent by the client
-    const userIdFromQuery = socket.handshake.query.userId;
+    const userId = socket.handshake.query.userId as string;
 
-    if (userIdFromQuery) {
+    if (userId) {
       // Assign the userId to socket.data
-      socket.data.userId = userIdFromQuery;
-      logger.b(`✔️ User ID ${socket.data.userId} added to socket ${socket.id}`);
+      socket.data.userId = userId;
+      // logger.b(`✔️ User ID ${socket.data.userId} added to socket ${socket.id}`);
+
+      // Set user.isOnline to true in db
+      updateUserOnlineStatus(userId, true);
     } else {
       logger.r(`❌ No user ID provided during connection`);
     }
@@ -43,6 +41,12 @@ const initSocketServer = (httpServer: any): Server => {
     // Connection is closed
     socket.conn.on('close', (reason) => {
       logger.y(`❌ Disconnected socket ${socket.id}. Reason: ${reason}`);
+
+      // Set user.isOnline to false in db
+      const userId = socket.data.userId as string;
+      if (userId) {
+        updateUserOnlineStatus(userId, false);
+      }
     });
   });
 
