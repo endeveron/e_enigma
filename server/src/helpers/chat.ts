@@ -62,5 +62,6 @@ export const parseMessages = (messages: any): EncryptedMessage[] => {
     createdAt: m.createdAt,
     recievedAt: m.recievedAt,
     viewedAt: m.viewedAt,
+    systemCode: m.systemCode,
   }));
 };

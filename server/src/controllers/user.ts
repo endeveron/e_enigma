@@ -44,8 +44,6 @@ export const searchUser = async (
   } catch (err: any) {
     // console.error(err);
     logger.r('searchUser', err);
-    return next(
-      new HttpError('Unable to search. Please try again later.', 500)
-    );
+    return next(new HttpError('Unable to handle user search.', 500));
   }
 };

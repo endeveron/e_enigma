@@ -2,29 +2,25 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-// import { setPRNG } from 'tweetnacl';
 
-import MessageInput from '@/components/MessageInput';
-import MessageList from '@/components/MessageList';
-import { Text } from '@/components/Text';
-import { useChat } from '@/core/context/ChatProvider';
-import { useSession } from '@/core/context/SessionProvider';
-import { useSocket } from '@/core/context/SocketProvider';
-import { updateRoomMessages } from '@/core/functions/chat';
-import { getRoomMessages, updateMessagesMetadata } from '@/core/functions/db';
-// import { PRNG } from '@/core/functions/encryption';
-import { logMessage } from '@/core/functions/helpers';
+import MessageInput from '@/src/components/MessageInput';
+import MessageList from '@/src/components/MessageList';
+import NavBack from '@/src/components/NavBack';
+import { Text } from '@/src/components/Text';
+import { useChat } from '@/src/context/ChatProvider';
+import { useSession } from '@/src/context/SessionProvider';
+import { useSocket } from '@/src/context/SocketProvider';
+import { updateRoomMessages } from '@/src/functions/chat';
+import { getRoomMessages, updateMessagesMetadata } from '@/src/functions/db';
+import { logMessage } from '@/src/functions/helpers';
+import { postUpdateMessagesMetadata } from '@/src/services/chat';
 import {
   MessageEventData,
   MessageItem,
   MessageMetadataItem,
   MessageType,
-} from '@/core/types/chat';
-import { postUpdateMessagesMetadata } from '@/core/services/chat';
+} from '@/src/types/chat';
 import { Image } from 'expo-image';
-import NavBack from '@/components/NavBack';
-
-// setPRNG(PRNG);
 
 const ChatRoomScreen = () => {
   const searchParams = useLocalSearchParams();
@@ -62,9 +58,9 @@ const ChatRoomScreen = () => {
     const newMessage = result;
 
     setMessages((messages) => [...messages!, newMessage]);
-    console.info(
-      `[ F ] RMS3 Newly created message is shown / handleMessageInputSubmit`
-    );
+    // console.info(
+    //   `[ F ] RMS3 Newly created message is shown / handleMessageInputSubmit`
+    // );
 
     // Save message in local db, encrypt and send to server
     await handleCreatedMessage(newMessage);
@@ -221,25 +217,25 @@ const ChatRoomScreen = () => {
       <View className="flex-1 relative">
         {/* Main content */}
         <View className="flex-1 relative z-10">
-          {roomTitle && (
+          {roomTitle ? (
             <View className="relative mt-10 flex-row items-center justify-center">
               {/* Nav Back */}
-              <View className="absolute top-0 left-2 w-10 h-full">
+              <View className="absolute top-0 left-4 w-8 h-full flex-row items-center">
                 <NavBack />
               </View>
 
-              <Text colorName="textAlt" className="font-pbold text-3xl py-4">
+              <Text colorName="title" className="font-pbold text-3xl py-4">
                 {roomTitle}
               </Text>
             </View>
-          )}
-          {messages && (
+          ) : null}
+          {messages ? (
             <MessageList
               messages={messages}
               userId={userId}
               timestamp={timestamp}
             />
-          )}
+          ) : null}
         </View>
 
         {/* Background image */}
@@ -247,7 +243,7 @@ const ChatRoomScreen = () => {
           <Image
             style={{ height: 160, width: 160 }}
             source={require('@/assets/images/background_logo.svg')}
-            // transition={1000}
+            // transition={500}
           />
         </View>
       </View>

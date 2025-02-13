@@ -12,6 +12,7 @@ import {
   postMessage,
   updateMessagesMetadata,
   getInitialData,
+  deleteMessage,
 } from '../controllers/chat';
 import { handleHttpError } from '../helpers/error';
 import { checkAuth } from '../middleware/check-auth';
@@ -63,6 +64,7 @@ router.post(
   ],
   postMessage
 );
+router.delete('/message', deleteMessage);
 
 router.use(handleHttpError);
 

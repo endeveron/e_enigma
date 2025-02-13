@@ -1,7 +1,15 @@
 import logger from '../helpers/logger';
 import MessageModel from '../models/message';
-import { InvitationAnswerData, MessageEventData } from '../types/chat';
+import {
+  InvitationAnswerData,
+  Message,
+  MessageEventData,
+  SystemMessageCode,
+} from '../types/chat';
 import { getSocket } from '../lib/socketio';
+import RoomModel from '../models/room';
+import { Result, Status } from '../types/common';
+import { getRoomMemberId } from '../helpers/chat';
 
 export const handleInvitationAnswer = async (data: InvitationAnswerData) => {
   const errMsg = '❌ Unable to handle invitation report.';
@@ -60,5 +68,57 @@ export const handleMessageReport = async (reportData: MessageEventData) => {
     socket.emit('message:metadata', eventData);
   } else {
     // TODO: keep unsent message reports
+  }
+};
+
+export const sendSystemMessage = async (
+  userId: string,
+  data: string
+): Promise<Result<Status>> => {
+  try {
+    // Get the user's rooms
+    const userRooms = await RoomModel.find({ members: userId });
+    if (!userRooms.length) {
+      return {
+        data: null,
+        error: { message: `User has no rooms` },
+      };
+    }
+    // Create a system message for each room
+    const createdAt = Date.now();
+
+    for (let room of userRooms) {
+      // Get recipient id
+      const members = room.members;
+      const userIndex = members.findIndex((id) => id.toString() === userId);
+      let senderId;
+      let recipientId;
+      if (userIndex === 0) {
+        senderId = members[0];
+        recipientId = members[1];
+      } else {
+        senderId = members[1];
+        recipientId = members[0];
+      }
+      await MessageModel.create({
+        roomId: room._id,
+        senderId,
+        recipientId,
+        data,
+        createdAt,
+        systemCode: SystemMessageCode.E001,
+      });
+    }
+
+    return {
+      data: { success: true },
+      error: null,
+    };
+  } catch (err: any) {
+    console.error(`sendSystemMessage: ${err}`);
+    return {
+      data: null,
+      error: { message: `Unable to send system message` },
+    };
   }
 };

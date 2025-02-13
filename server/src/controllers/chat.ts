@@ -20,6 +20,7 @@ import {
   MessageMetadataItem,
   RoomItem,
   RoomMember,
+  SystemMessageCode,
 } from '../types/chat';
 import { UserItem } from '../types/user';
 
@@ -162,70 +163,6 @@ export const getInitialData = async (
   }
 };
 
-export const getRooms = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const userId = req.query.userId as string;
-  if (!userId) {
-    return next(new HttpError('Invalid user id', 409));
-  }
-
-  try {
-    // Get the user's rooms sorted by `updatedAt` in descending order (fresh first)
-    const userRooms = await RoomModel.find({ members: userId }, null, {
-      sort: { updatedAt: -1 },
-    });
-
-    if (!userRooms.length) {
-      res.status(200).json({
-        data: {
-          roomItems: [],
-          roomMembers: [],
-        },
-      });
-      return;
-    }
-
-    const roomItems = await configureRoomItems(userRooms, userId);
-
-    // Get room members
-    let roomMembers: RoomMember[] = [];
-    // Create room member id array
-    const roomMemberIdSet: Set<string> = new Set();
-    for (let r of roomItems) {
-      roomMemberIdSet.add(r.memberId);
-    }
-    const roomMemberIdArr: string[] = Array.from(roomMemberIdSet);
-    // Create room member array
-    const users = await UserModel.find({
-      _id: { $in: roomMemberIdArr },
-    }).select('account.name account.imageUrl publicKey');
-    if (!users.length) {
-      return next(new HttpError('Unable to get users.', 500));
-    }
-    roomMembers = users.map((user: any) => ({
-      id: user._id.toString(),
-      name: user.account.name,
-      imageUrl: user.account.imageUrl,
-      publicKey: user.publicKey,
-    }));
-
-    res.status(200).json({
-      data: {
-        roomItems,
-        roomMembers,
-      },
-    });
-  } catch (err: any) {
-    logger.r('getRooms', err);
-    return next(
-      new HttpError('Unable to get rooms. Please try again later.', 500)
-    );
-  }
-};
-
 export const postRoom = async (
   req: Request,
   res: Response,
@@ -285,6 +222,68 @@ export const postRoom = async (
   }
 };
 
+export const getRooms = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.query.userId as string;
+  if (!userId) {
+    return next(new HttpError('Invalid user id', 409));
+  }
+
+  try {
+    // Get the user's rooms sorted by `updatedAt` in descending order (fresh first)
+    const userRooms = await RoomModel.find({ members: userId }, null, {
+      sort: { updatedAt: -1 },
+    });
+
+    if (!userRooms.length) {
+      res.status(200).json({
+        data: {
+          roomItems: [],
+          roomMembers: [],
+        },
+      });
+      return;
+    }
+
+    const roomItems = await configureRoomItems(userRooms, userId);
+
+    // Get room members
+    let roomMembers: RoomMember[] = [];
+    // Create room member id array
+    const roomMemberIdSet: Set<string> = new Set();
+    for (let r of roomItems) {
+      roomMemberIdSet.add(r.memberId);
+    }
+    const roomMemberIdArr: string[] = Array.from(roomMemberIdSet);
+    // Create room member array
+    const users = await UserModel.find({
+      _id: { $in: roomMemberIdArr },
+    }).select('account.name account.imageUrl publicKey');
+    if (!users.length) {
+      return next(new HttpError('Unable to get users.', 500));
+    }
+    roomMembers = users.map((user: any) => ({
+      id: user._id.toString(),
+      name: user.account.name,
+      imageUrl: user.account.imageUrl,
+      publicKey: user.publicKey,
+    }));
+
+    res.status(200).json({
+      data: {
+        roomItems,
+        roomMembers,
+      },
+    });
+  } catch (err: any) {
+    logger.r('getRooms', err);
+    return next(new HttpError('Unable to get rooms.', 500));
+  }
+};
+
 export const inviteUserToChat = async (
   req: Request,
   res: Response,
@@ -332,9 +331,7 @@ export const inviteUserToChat = async (
     });
   } catch (err: any) {
     logger.r('inviteUserToChat', err);
-    return next(
-      new HttpError('Unable to save invitation. Please try again later.', 500)
-    );
+    return next(new HttpError('Unable to save invitation.', 500));
   }
 };
 
@@ -365,9 +362,7 @@ export const getInvitations = async (
     });
   } catch (err: any) {
     logger.r('getInvitations', err);
-    return next(
-      new HttpError('Unable to get invitations. Please try again later.', 500)
-    );
+    return next(new HttpError('Unable to get invitations.', 500));
   }
 };
 
@@ -380,56 +375,17 @@ export const deleteInvitation = async (
   const invitedUserId = req.query.invitedUserId as string;
 
   try {
-    const invitations = await InvitationModel.find({
+    await InvitationModel.findOneAndDelete({
       from: roomCreatorId,
       to: invitedUserId,
     });
-    if (!invitations.length) {
-      return next(new HttpError(`Invitation not found.`, 404));
-    }
-
-    await invitations[0].deleteOne();
 
     res.status(200).json({
       data: true,
     });
   } catch (err) {
-    logger.r('createRoom', err);
+    logger.r('deleteInvitation', err);
     return next(new HttpError('Unable to delete the invitation.', 500));
-  }
-};
-
-export const getNewMessages = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (!isReqValid(req, next)) return;
-  const userId = req.query.userId as string;
-  const errMsg = `Unable to get new mwessages.`;
-
-  try {
-    // Check if the user exists
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return next(new HttpError(`${errMsg} User not found`, 404));
-    }
-
-    // Get all the messages sent to the user but not yet viewed by them
-    const newMessageDocs = await MessageModel.find({
-      recipientId: userId,
-      viewedAt: undefined,
-    });
-
-    // Parse messages
-    const parsedMessages = parseMessages(newMessageDocs);
-
-    res.status(200).json({
-      data: parsedMessages,
-    });
-  } catch (err) {
-    logger.r('getNewMessages', err);
-    return next(new HttpError('', 500));
   }
 };
 
@@ -494,8 +450,52 @@ export const postMessage = async (
       data: message._id.toString(),
     });
   } catch (err) {
-    logger.r('createMessage', err);
+    logger.r('postMessage', err);
     return next(new HttpError('Unable to create a message.', 500));
+  }
+};
+
+export const getNewMessages = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!isReqValid(req, next)) return;
+  const userId = req.query.userId as string;
+  const timestamp = req.query.timestamp as string | undefined;
+  const errMsg = `Unable to get new mwessages.`;
+
+  const baseQuery = {
+    recipientId: userId,
+    viewedAt: undefined,
+  };
+
+  const queryWithTimestamp = {
+    createdAt: { $gt: +timestamp! },
+    ...baseQuery,
+  };
+
+  const filterQuery = !!timestamp ? queryWithTimestamp : baseQuery;
+
+  try {
+    // Check if the user exists
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return next(new HttpError(`${errMsg} User not found`, 404));
+    }
+
+    // Get all the messages sent to the user but not yet viewed by them
+    const newMessageDocs = await MessageModel.find(filterQuery);
+
+    // Parse messages
+    const parsedMessages = parseMessages(newMessageDocs);
+
+    res.status(200).json({
+      data: parsedMessages,
+    });
+  } catch (err) {
+    logger.r('getNewMessages', err);
+    return next(new HttpError('', 500));
   }
 };
 
@@ -533,7 +533,37 @@ export const updateMessagesMetadata = async (
       data: messageMetadataItems,
     });
   } catch (err) {
-    logger.r('createMessage', err);
-    return next(new HttpError('Unable to create a message.', 500));
+    logger.r('updateMessagesMetadata', err);
+    return next(new HttpError('Unable to update messages metadata.', 500));
+  }
+};
+
+export const deleteMessage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const roomId = req.query.roomId as string;
+
+  try {
+    const messages = await MessageModel.find({
+      roomId,
+      systemCode: SystemMessageCode.E001,
+    });
+
+    if (messages.length === 1) {
+      await messages[0].deleteOne();
+    } else if (messages.length > 1) {
+      for (let message of messages) {
+        await message.deleteOne();
+      }
+    }
+
+    res.status(200).json({
+      data: true,
+    });
+  } catch (err) {
+    logger.r('deleteMessage', err);
+    return next(new HttpError('Unable to delete message.', 500));
   }
 };

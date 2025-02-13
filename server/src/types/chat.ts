@@ -56,6 +56,7 @@ export type Message = {
   createdAt: number;
   recievedAt?: number;
   viewedAt?: number;
+  systemCode?: string;
 };
 
 export type EncryptedMessage = Omit<
@@ -98,3 +99,7 @@ export type InvitationAnswerData = {
   from: string;
   to: string;
 };
+
+export enum SystemMessageCode {
+  E001 = 'E001', // Encryption keys are changed
+}

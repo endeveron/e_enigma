@@ -11,15 +11,15 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 
-import { StatusBar } from '@/components/StatusBar';
-import { colors } from '@/core/constants/colors';
-import EventProvider from '@/core/context/EventProvider';
-import LocalDBProvider from '@/core/context/LocalDBProvider';
-import SessionProvider from '@/core/context/SessionProvider';
-import { useTheme } from '@/core/hooks/useTheme';
-import { Screen } from '@/core/types/common';
+import { StatusBar } from '@/src/components/StatusBar';
+import { colors } from '@/src/constants/colors';
+import EventProvider from '@/src/context/EventProvider';
+import LocalDBProvider from '@/src/context/LocalDBProvider';
+import SessionProvider from '@/src/context/SessionProvider';
+import { useTheme } from '@/src/hooks/useTheme';
+import { Screen } from '@/src/types/common';
 
-import '@/core/styles/global.css';
+import '@/src/styles/global.css';
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.error,

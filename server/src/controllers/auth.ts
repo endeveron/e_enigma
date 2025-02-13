@@ -2,19 +2,18 @@ import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { HttpError } from '../helpers/error';
-import { getItem } from '../helpers/getFromDb';
-import { isReqValid } from '../helpers/http';
-import logger from '../helpers/logger';
-import { sendPasswordResetEmail } from '../functions/mail';
-import { configureUserData } from '../helpers/user';
-import UserModel from '../models/user';
-import { User } from '../types/user';
-import { generateAlphanumeric } from '../helpers/random';
 import {
   RESET_TOKEN_EXPIRES_IN_HOURS,
   RESET_TOKEN_LENGTH,
 } from '../config/auth';
+import { sendPasswordResetEmail } from '../functions/mail';
+import { HttpError } from '../helpers/error';
+import { isReqValid } from '../helpers/http';
+import logger from '../helpers/logger';
+import { generateAlphanumeric } from '../helpers/random';
+import { configureUserData } from '../helpers/user';
+import UserModel from '../models/user';
+import { sendSystemMessage } from '../functions/chat';
 
 const jwtKey = process.env.JWT_KEY;
 if (!jwtKey) {
@@ -84,9 +83,7 @@ export const signup = async (
     });
   } catch (err) {
     logger.r('Signup', err);
-    return next(
-      new HttpError('Could not create account. Please try again later.', 500)
-    );
+    return next(new HttpError('Could not create account.', 500));
   }
 };
 
@@ -96,17 +93,14 @@ export const signin = async (
   next: NextFunction
 ) => {
   if (!isReqValid(req, next)) return;
-  const { email, password } = req.body;
+  const { email, password, publicKey } = req.body;
 
   try {
-    // Get user account data from the DB
-    const userData = await getItem<User>(UserModel, {
-      'account.email': email,
-    });
-    if (userData?.error) {
+    // Get user from the db
+    const user = await UserModel.findOne({ 'account.email': email });
+    if (!user) {
       return next(new HttpError('No account registered for this email', 404));
     }
-    const user = userData.data;
 
     // Check provided password
     const isPasswordValid = await bcrypt.compare(
@@ -120,6 +114,18 @@ export const signin = async (
     // Generate JWT
     const userId = user._id.toString();
     const token = genetrateJWToken(userId, next);
+
+    // If the public key provided, the keys have been regenerated
+    if (publicKey) {
+      user.publicKey = publicKey;
+      await user.save();
+
+      // The system message should be created and posted to the user's rooms
+      const result = await sendSystemMessage(user._id.toString(), publicKey);
+      if (result.error) {
+        return next(new HttpError(result.error.message, 500));
+      }
+    }
 
     // Successfully signed in
     res.status(200).json({

@@ -29,6 +29,7 @@ const messageSchema = new Schema<Message>(
     },
     recievedAt: { type: Number },
     viewedAt: { type: Number },
+    systemCode: { type: String },
   },
   {
     versionKey: false,

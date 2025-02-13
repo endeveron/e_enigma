@@ -1,24 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Image } from 'expo-image';
 import { Link, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { Button } from '@/components/Button';
-import { FormField } from '@/components/FormField';
-import { Text } from '@/components/Text';
-import {
-  AUTH_EMAIL,
-  AUTH_PASSWORD,
-  DEFAULT_REDIRECT_URL,
-} from '@/core/constants';
-import { useSession } from '@/core/context/SessionProvider';
-import { logMessage } from '@/core/functions/helpers';
-import { useToast } from '@/core/hooks/useToast';
-import { SignInFormData, signInSchema } from '@/core/utils/validation';
-
-import { KEY_DATA_FETCHED, KEY_USER_ID_LIST } from '@/core/constants/store';
+import { Button } from '@/src/components/Button';
+import { FormField } from '@/src/components/FormField';
+import { Text } from '@/src/components/Text';
+import { AUTH_EMAIL, AUTH_PASSWORD, MAIN_REDIRECT_URL } from '@/src/constants';
+import { KEY_DATA_FETCHED, KEY_USER_ID_LIST } from '@/src/constants/store';
+import { useSession } from '@/src/context/SessionProvider';
 import {
   createInvitationTable,
   createLogTable,
@@ -26,15 +19,18 @@ import {
   createRoomMemberTable,
   createRoomTable,
   deleteAllTables,
-} from '@/core/functions/db';
+} from '@/src/functions/db';
+import { logMessage } from '@/src/functions/helpers';
 import {
   deleteSecureStoreItem,
   deleteStorageItem,
   getSecureStoreItem,
   setSecureStoreItem,
-} from '@/core/functions/store';
-import { reset } from '@/core/services/chat';
-import { Image } from 'expo-image';
+} from '@/src/functions/store';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useToast } from '@/src/hooks/useToast';
+import { reset } from '@/src/services/chat';
+import { SignInFormData, signInSchema } from '@/src/utils/validation';
 
 const SignIn = () => {
   const { isLoading, signIn } = useSession();
@@ -44,6 +40,8 @@ const SignIn = () => {
   });
 
   const [isDevMode, setIsDevMode] = useState(false);
+
+  const cardColor = useThemeColor('card');
 
   // fill out the form
   useEffect(() => {
@@ -65,9 +63,9 @@ const SignIn = () => {
         return;
       }
 
-      // Success, redirect to DEFAULT_REDIRECT_URL
+      // Success, redirect to MAIN_REDIRECT_URL
       logMessage('[ AUT ] Logged in', 'success');
-      router.replace(DEFAULT_REDIRECT_URL);
+      router.replace(MAIN_REDIRECT_URL);
     } catch (error: any) {
       showToast('Something went wrong. Please try again later');
       logMessage(
@@ -75,6 +73,10 @@ const SignIn = () => {
         'error'
       );
     }
+  };
+
+  const handleLeaveHiddenMode = () => {
+    // router.replace(LEAVE_REDIRECT_URL);
   };
 
   const handleToggleDevMode = () => {
@@ -149,7 +151,7 @@ const SignIn = () => {
             source={require('@/assets/images/logo.svg')}
             // transition={250}
           />
-          <Text colorName="textAlt" className="text-4xl font-pbold my-3">
+          <Text colorName="title" className="text-4xl font-pbold my-3">
             Log In
           </Text>
 
@@ -158,84 +160,102 @@ const SignIn = () => {
             colorName="muted"
             className="font-psemibold"
           >
-            Welcome back
+            {isLoading ? 'Sending data' : 'Welcome back'}
           </Text>
         </View>
 
-        <Controller
-          control={control}
-          render={({
-            field: { onChange, onBlur, value },
-            fieldState: { error },
-          }) => (
-            <FormField
-              name="email"
-              label="Email"
-              value={value}
-              onBlur={onBlur}
-              handleChangeText={onChange}
-              containerClassName="mt-4"
-              error={error}
-              keyboardType="email-address"
-              // autoFocus={true}
-            />
-          )}
-          name="email"
-        />
-        <Controller
-          control={control}
-          render={({
-            field: { onChange, onBlur, value },
-            fieldState: { error },
-          }) => (
-            <FormField
-              name="password"
-              label="Password"
-              value={value}
-              onBlur={onBlur}
-              handleChangeText={onChange}
-              containerClassName="mt-4"
-              error={error}
-            />
-          )}
-          name="password"
-        />
+        <View
+          className={`flex-col items-center ${
+            isLoading ? 'opacity-40 pointer-events-none' : ''
+          }`}
+        >
+          <Controller
+            control={control}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { error },
+            }) => (
+              <FormField
+                name="email"
+                label="Email"
+                value={value}
+                onBlur={onBlur}
+                handleChangeText={onChange}
+                containerClassName="mt-4"
+                error={error}
+                keyboardType="email-address"
+                // autoFocus={true}
+              />
+            )}
+            name="email"
+          />
+          <Controller
+            control={control}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { error },
+            }) => (
+              <FormField
+                name="password"
+                label="Password"
+                value={value}
+                onBlur={onBlur}
+                handleChangeText={onChange}
+                containerClassName="mt-4"
+                error={error}
+              />
+            )}
+            name="password"
+          />
 
-        <Button
-          title="Log In"
-          handlePress={handleSubmit(onSubmit)}
-          containerClassName="mt-8"
-          isLoading={isLoading}
-        />
-        <View className="flex flex-col items-center justify-center py-8">
-          <Link
-            href="/sign-up"
-            className="flex flex-row items-end justify-center p-4"
-          >
-            <Text colorName="muted" className="font-pmedium">
-              Don't have an account?
-            </Text>
-            <View className="w-4"></View>
-            <Text colorName="textAlt" className="font-pmedium text-lg ">
-              Sign Up
-            </Text>
-          </Link>
+          <Button
+            title="Log In"
+            handlePress={handleSubmit(onSubmit)}
+            containerClassName="mt-8 w-full"
+            isLoading={isLoading}
+          />
+          <View className="flex flex-col items-center justify-center py-8">
+            <Link
+              href="/sign-up"
+              className="flex flex-row items-end justify-center p-4"
+            >
+              <Text colorName="muted" className="font-pmedium">
+                Don't have an account?
+              </Text>
+              <View className="w-4"></View>
+              <Text
+                colorName={isLoading ? 'muted' : 'link'}
+                className="font-pmedium text-lg"
+              >
+                Sign Up
+              </Text>
+            </Link>
 
-          <Link
-            href="/reset-password"
-            className="flex flex-row items-end justify-center p-4"
-          >
-            <Text colorName="muted" className="font-pmedium">
-              Forgot password?
-            </Text>
-          </Link>
+            <Link
+              href="/reset-password"
+              className="flex flex-row items-end justify-center p-4"
+            >
+              <Text colorName="muted" className="font-pmedium">
+                Forgot password?
+              </Text>
+            </Link>
+          </View>
         </View>
 
-        {isDevMode && (
-          <View className="flex-col items-center gap-4">
-            <Button variant="secondary" title="Reset" handlePress={resetData} />
+        {/* Dev mode */}
+        {isDevMode ? (
+          <View className="flex-row justify-center gap-8">
+            <TouchableOpacity
+              className="px-8 py-4 rounded-full"
+              onPress={resetData}
+              style={{ backgroundColor: cardColor }}
+            >
+              <Text colorName="muted" className="font-pmedium">
+                Reset
+              </Text>
+            </TouchableOpacity>
           </View>
-        )}
+        ) : null}
       </View>
     </KeyboardAwareScrollView>
   );

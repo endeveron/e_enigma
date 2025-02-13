@@ -10,7 +10,7 @@ const config = getDefaultConfig(__dirname);
 
 const configWithReanimated = wrapWithReanimatedMetroConfig(config);
 const resultConfig = withNativeWind(configWithReanimated, {
-  input: './core/styles/global.css',
+  input: './src/styles/global.css',
 });
 
 module.exports = resultConfig;

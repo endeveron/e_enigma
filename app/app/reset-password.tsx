@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { Button } from '@/components/Button';
-import ResetPswdStep1 from '@/components/reset-password/ResetPswdStep1';
-import ResetPswdStep2 from '@/components/reset-password/ResetPswdStep2';
-import { Text } from '@/components/Text';
-import { useThemeColor } from '@/core/hooks/useThemeColor';
-import { useToast } from '@/core/hooks/useToast';
-import { wait } from '@/core/functions/helpers';
-import { postForgotPassword, postResetPassword } from '@/core/services/auth';
+import { Button } from '@/src/components/Button';
+import ResetPswdStep1 from '@/src/components/reset-password/ResetPswdStep1';
+import ResetPswdStep2 from '@/src/components/reset-password/ResetPswdStep2';
+import { Text } from '@/src/components/Text';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useToast } from '@/src/hooks/useToast';
+import { wait } from '@/src/functions/helpers';
+import { postForgotPassword, postResetPassword } from '@/src/services/auth';
 
 type Notification = {
   title: string;
@@ -190,12 +190,12 @@ const ResetPassword = () => {
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
     >
       <View className="relative py-20 px-4">
-        {errorNotification && (
+        {errorNotification ? (
           <View
             className="absolute flex-1 inset-x-0 inset-y-0 flex-col items-center justify-center gap-4 z-20 px-8"
             style={{ backgroundColor }}
           >
-            <Text colorName="textAlt" className="text-4xl font-pbold">
+            <Text colorName="title" className="text-4xl font-pbold">
               {errorNotification.title}
             </Text>
             <Text colorName="muted" className="text-lg font-psemibold">
@@ -208,20 +208,20 @@ const ResetPassword = () => {
               containerClassName="mt-8"
             />
           </View>
-        )}
-        {notification && (
+        ) : null}
+        {notification ? (
           <View
             className="absolute flex-1 inset-x-0 inset-y-0 flex-col items-center justify-center gap-4 z-10 px-8"
             style={{ backgroundColor }}
           >
-            <Text colorName="textAlt" className="text-4xl font-pbold">
+            <Text colorName="title" className="text-4xl font-pbold">
               {notification.title}
             </Text>
             <Text colorName="muted" className="text-lg font-psemibold">
               {notification.message}
             </Text>
           </View>
-        )}
+        ) : null}
 
         <View className="relative flex-col items-center">
           <Image
@@ -229,26 +229,15 @@ const ResetPassword = () => {
             source={require('@/assets/images/logo.svg')}
             // transition={250}
           />
-          <Text colorName="textAlt" className="text-4xl font-pbold my-3">
+          <Text colorName="title" className="text-4xl font-pbold my-3">
             {content.title}
           </Text>
           <Text colorName="muted" className="font-psemibold">
             {content.subtitle}
           </Text>
 
-          {step === 1 && <ResetPswdStep1 onSubmit={handleStep1Submit} />}
-          {step === 2 && <ResetPswdStep2 onSubmit={handleStep2Submit} />}
-          {/* {step === 2 && (
-            <Button
-              title="Go back"
-              icon={
-                <FeatherIcon size={24} name="arrow-left" color={mutedColor} />
-              }
-              variant="secondary"
-              handlePress={() => handlePrevStep()}
-              containerClassName="mt-8"
-            />
-          )} */}
+          {step === 1 ? <ResetPswdStep1 onSubmit={handleStep1Submit} /> : null}
+          {step === 2 ? <ResetPswdStep2 onSubmit={handleStep2Submit} /> : null}
         </View>
       </View>
     </KeyboardAwareScrollView>

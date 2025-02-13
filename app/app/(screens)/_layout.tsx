@@ -1,11 +1,11 @@
 import { Redirect, Stack } from 'expo-router';
 import React from 'react';
 
-import { useThemeColor } from '@/core/hooks/useThemeColor';
-import { Screen } from '@/core/types/common';
-import { useSession } from '@/core/context/SessionProvider';
-import ChatProvider from '@/core/context/ChatProvider';
-import SocketProvider from '@/core/context/SocketProvider';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { Screen } from '@/src/types/common';
+import { useSession } from '@/src/context/SessionProvider';
+import ChatProvider from '@/src/context/ChatProvider';
+import SocketProvider from '@/src/context/SocketProvider';
 
 const screens: Screen[] = [
   { name: 'index', title: 'Messenger' },
