@@ -43,7 +43,7 @@ export const searchUser = async (
     });
   } catch (err: any) {
     // console.error(err);
-    logger.r('searchUser', err);
+    logger.error('searchUser', err);
     return next(new HttpError('Unable to handle user search.', 500));
   }
 };

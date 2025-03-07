@@ -25,7 +25,7 @@ export const configureRoomItems = async (
 
     const memberId = getRoomMemberId(r, userId);
     if (!memberId) {
-      logger.r('configureRoomItems: Unable to get memberId');
+      logger.error('configureRoomItems: Unable to get memberId');
       return [];
     }
 

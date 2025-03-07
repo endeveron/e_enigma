@@ -14,7 +14,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_SERVER_URL": "https://softest-server-005.oa.r.appspot.com"
+        "EXPO_PUBLIC_SERVER_URL": "https://aurentium-ca.lm.r.appspot.com"
       }
     },
     "production": {

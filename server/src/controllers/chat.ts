@@ -66,7 +66,7 @@ export const reset = async (
       data: true,
     });
   } catch (err: any) {
-    logger.r('getInitialData', err);
+    logger.error('getInitialData', err);
     return next(new HttpError('Unable to get initial data.', 500));
   }
 };
@@ -158,7 +158,7 @@ export const getInitialData = async (
       },
     });
   } catch (err: any) {
-    logger.r('getInitialData', err);
+    logger.error('getInitialData', err);
     return next(new HttpError('Unable to get initial data.', 500));
   }
 };
@@ -217,7 +217,7 @@ export const postRoom = async (
       },
     });
   } catch (err) {
-    logger.r('postRoom', err);
+    logger.error('postRoom', err);
     return next(new HttpError('Unable to create room.', 500));
   }
 };
@@ -279,7 +279,7 @@ export const getRooms = async (
       },
     });
   } catch (err: any) {
-    logger.r('getRooms', err);
+    logger.error('getRooms', err);
     return next(new HttpError('Unable to get rooms.', 500));
   }
 };
@@ -330,7 +330,7 @@ export const inviteUserToChat = async (
       data: true,
     });
   } catch (err: any) {
-    logger.r('inviteUserToChat', err);
+    logger.error('inviteUserToChat', err);
     return next(new HttpError('Unable to save invitation.', 500));
   }
 };
@@ -361,7 +361,7 @@ export const getInvitations = async (
       data: recievedInvitations,
     });
   } catch (err: any) {
-    logger.r('getInvitations', err);
+    logger.error('getInvitations', err);
     return next(new HttpError('Unable to get invitations.', 500));
   }
 };
@@ -384,7 +384,7 @@ export const deleteInvitation = async (
       data: true,
     });
   } catch (err) {
-    logger.r('deleteInvitation', err);
+    logger.error('deleteInvitation', err);
     return next(new HttpError('Unable to delete the invitation.', 500));
   }
 };
@@ -450,7 +450,7 @@ export const postMessage = async (
       data: message._id.toString(),
     });
   } catch (err) {
-    logger.r('postMessage', err);
+    logger.error('postMessage', err);
     return next(new HttpError('Unable to create a message.', 500));
   }
 };
@@ -494,7 +494,7 @@ export const getNewMessages = async (
       data: parsedMessages,
     });
   } catch (err) {
-    logger.r('getNewMessages', err);
+    logger.error('getNewMessages', err);
     return next(new HttpError('', 500));
   }
 };
@@ -533,7 +533,7 @@ export const updateMessagesMetadata = async (
       data: messageMetadataItems,
     });
   } catch (err) {
-    logger.r('updateMessagesMetadata', err);
+    logger.error('updateMessagesMetadata', err);
     return next(new HttpError('Unable to update messages metadata.', 500));
   }
 };
@@ -563,7 +563,7 @@ export const deleteMessage = async (
       data: true,
     });
   } catch (err) {
-    logger.r('deleteMessage', err);
+    logger.error('deleteMessage', err);
     return next(new HttpError('Unable to delete message.', 500));
   }
 };

@@ -12,9 +12,9 @@ import { Result, Status } from '../types/common';
 import { getRoomMemberId } from '../helpers/chat';
 
 export const handleInvitationAnswer = async (data: InvitationAnswerData) => {
-  const errMsg = '❌ Unable to handle invitation report.';
+  const errMsg = 'Unable to handle invitation report.';
   if (!data?.event || !data?.from || !data?.to) {
-    logger.r(`${errMsg} Invalid invitation data.`);
+    logger.error(`${errMsg} Invalid invitation data.`);
     return;
   }
 
@@ -31,16 +31,16 @@ export const handleInvitationAnswer = async (data: InvitationAnswerData) => {
 };
 
 export const handleMessageReport = async (reportData: MessageEventData) => {
-  const errMsg = '❌ Unable to handle message report.';
+  const errMsg = 'Unable to handle message report.';
   if (!reportData?.messageId || !reportData?.recipientId) {
-    logger.r(`${errMsg} Invalid message data.`);
+    logger.error(`${errMsg} Invalid message data.`);
     return;
   }
 
   // Find the message in db
   const message = await MessageModel.findById(reportData.messageId);
   if (!message) {
-    logger.r(`${errMsg} Message not found in db.`);
+    logger.error(`${errMsg} Message not found in db.`);
     return;
   }
 

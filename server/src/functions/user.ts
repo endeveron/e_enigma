@@ -18,7 +18,7 @@ export const getUserOnlineStatus = async (
       error: null,
     };
   } catch (err: any) {
-    logger.r('getUserState');
+    logger.error('getUserState');
     console.error(err);
     return {
       data: null,
@@ -40,7 +40,7 @@ export const updateUserOnlineStatus = async (
       error: null,
     };
   } catch (err: any) {
-    logger.r('updateUserState');
+    logger.error('updateUserState');
     console.error(err);
     return {
       data: null,

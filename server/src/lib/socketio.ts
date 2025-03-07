@@ -26,21 +26,21 @@ const initSocketServer = (httpServer: any): Server => {
     if (userId) {
       // Assign the userId to socket.data
       socket.data.userId = userId;
-      // logger.b(`✔️ User ID ${socket.data.userId} added to socket ${socket.id}`);
+      // logger.info(`User ID ${socket.data.userId} added to socket ${socket.id}`);
 
       // Set user.isOnline to true in db
       updateUserOnlineStatus(userId, true);
     } else {
-      logger.r(`❌ No user ID provided during connection`);
+      logger.error(`No user ID provided during connection`);
     }
 
     // Connection is opened
-    logger.b(`✔️ Connected socket ${socket.id}`);
+    logger.info(`Connected socket ${socket.id}`);
     socket.emit('userIdAssigned', { userId: socket.data.userId });
 
     // Connection is closed
     socket.conn.on('close', (reason) => {
-      logger.y(`❌ Disconnected socket ${socket.id}. Reason: ${reason}`);
+      logger.warning(`Disconnected socket ${socket.id}. Reason: ${reason}`);
 
       // Set user.isOnline to false in db
       const userId = socket.data.userId as string;
@@ -79,7 +79,7 @@ const getSocket = (userId: string): Socket | undefined => {
 //   if (!io) throw new Error(initErrMsg);
 //   const socket = getSocket(userId);
 //   if (!socket) {
-//     logger.r(`❌ No socket for the provided user id`);
+//     logger.error(`No socket for the provided user id`);
 //     return;
 //   }
 
@@ -87,21 +87,21 @@ const getSocket = (userId: string): Socket | undefined => {
 //     case 'create':
 //       {
 //         socket.join(roomId);
-//         logger.b(`✔️ Created room ${roomId}`);
-//         logger.b(`✔️ Socket ${socket.id} joined room ${roomId}`);
+//         logger.info(`Created room ${roomId}`);
+//         logger.info(`Socket ${socket.id} joined room ${roomId}`);
 //       }
 //       break;
 //     case 'join':
 //       {
 //         socket.join(roomId);
-//         logger.b(`✔️ Socket ${socket.id} joined room ${roomId}`);
+//         logger.info(`Socket ${socket.id} joined room ${roomId}`);
 //         socket.to(roomId).emit('userJoined', { userId, roomId });
 //       }
 //       break;
 //     case 'leave':
 //       {
 //         socket.leave(roomId);
-//         logger.b(`✔️ Socket ${socket.id} leaved room ${roomId}`);
+//         logger.info(`Socket ${socket.id} leaved room ${roomId}`);
 //         socket.to(roomId).emit('userLeaved', { userId, roomId });
 //       }
 //       break;

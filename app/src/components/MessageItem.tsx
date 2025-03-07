@@ -87,7 +87,7 @@ const MessageItem = ({
   }, [isNewMessage]);
 
   return (
-    <View className={`mx-2 mb-1 ${contClassName}`}>
+    <View className={`mx-2 mb-2 ${contClassName}`}>
       {/* Message bubble */}
       <View
         className={`relative px-4 py-2 rounded-3xl ${bubbleClassName}`}
@@ -106,7 +106,7 @@ const MessageItem = ({
         {/* Text */}
         <Text
           colorName={isSenderCurUser ? 'text' : 'title'}
-          className={`font-pmedium text-lg`}
+          className={`font-pregular text-lg`}
         >
           {data}
           <View className={`h-2 ${isSenderCurUser ? 'w-14' : 'w-10'}`}></View>

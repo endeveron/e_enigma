@@ -1,9 +1,3 @@
-## Messenger App
+## E2EE Messenger
 
-### API
-
-Node.js, Express, Mongoose, JWT
-
-### App
-
-Expo
+Privacy-focused chat messenger with end-to-end encryption, ensuring secure conversations with no data tracking, third-party access, or metadata exposure.
