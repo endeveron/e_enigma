@@ -1,26 +1,26 @@
-import { useLocalSearchParams } from 'expo-router';
+import { Image } from 'expo-image';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
-import MessageInput from '@/src/components/MessageInput';
-import MessageList from '@/src/components/MessageList';
-import NavBack from '@/src/components/NavBack';
-import { Text } from '@/src/components/Text';
-import { useChat } from '@/src/context/ChatProvider';
-import { useSession } from '@/src/context/SessionProvider';
-import { useSocket } from '@/src/context/SocketProvider';
-import { updateRoomMessages } from '@/src/functions/chat';
-import { getRoomMessages, updateMessagesMetadata } from '@/src/functions/db';
-import { logMessage } from '@/src/functions/helpers';
-import { postUpdateMessagesMetadata } from '@/src/services/chat';
+import MessageInput from '@/components/MessageInput';
+import MessageList from '@/components/MessageList';
+import NavBack from '@/components/NavBack';
+import { Text } from '@/components/Text';
+import { useChat } from '@/context/ChatProvider';
+import { useSession } from '@/context/SessionProvider';
+import { useSocket } from '@/context/SocketProvider';
+import { updateRoomMessages } from '@/functions/chat';
+import { getRoomMessages, updateMessagesMetadata } from '@/functions/db';
+import { logMessage } from '@/functions/helpers';
+import { postUpdateMessagesMetadata } from '@/services/chat';
 import {
   MessageEventData,
   MessageItem,
   MessageMetadataItem,
   MessageType,
-} from '@/src/types/chat';
-import { Image } from 'expo-image';
+} from '@/types/chat';
 
 const ChatRoomScreen = () => {
   const searchParams = useLocalSearchParams();
@@ -210,45 +210,53 @@ const ChatRoomScreen = () => {
   }, [newMessageMap]);
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding" // important
-      style={{ flex: 1 }}
-    >
-      <View className="flex-1 relative">
-        {/* Main content */}
-        <View className="flex-1 relative z-10">
-          {roomTitle ? (
-            <View className="relative mt-10 flex-row items-center justify-center">
-              {/* Nav Back */}
-              <View className="absolute top-0 left-4 w-8 h-full flex-row items-center">
-                <NavBack />
+    <>
+      {/* <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      /> */}
+      <Stack.Screen />
+      <KeyboardAvoidingView
+        behavior="padding" // important
+        style={{ flex: 1 }}
+      >
+        <View className="flex-1 relative">
+          {/* Main content */}
+          <View className="flex-1 relative z-10">
+            {roomTitle ? (
+              <View className="relative mt-10 flex-row items-center justify-center">
+                {/* Nav Back */}
+                <View className="absolute top-0 left-4 w-8 h-full flex-row items-center">
+                  <NavBack />
+                </View>
+
+                <Text colorName="title" className="font-pbold text-3xl py-4">
+                  {roomTitle}
+                </Text>
               </View>
+            ) : null}
+            {messages ? (
+              <MessageList
+                messages={messages}
+                userId={userId}
+                timestamp={timestamp}
+              />
+            ) : null}
+          </View>
 
-              <Text colorName="title" className="font-pbold text-3xl py-4">
-                {roomTitle}
-              </Text>
-            </View>
-          ) : null}
-          {messages ? (
-            <MessageList
-              messages={messages}
-              userId={userId}
-              timestamp={timestamp}
+          {/* Background image */}
+          <View className="absolute flex-1 items-center justify-center inset-x-0 inset-y-0 z-0">
+            <Image
+              style={{ height: 160, width: 160 }}
+              source={require('@/assets/images/background_logo.svg')}
+              // transition={500}
             />
-          ) : null}
+          </View>
         </View>
-
-        {/* Background image */}
-        <View className="absolute flex-1 items-center justify-center inset-x-0 inset-y-0 z-0">
-          <Image
-            style={{ height: 160, width: 160 }}
-            source={require('@/assets/images/background_logo.svg')}
-            // transition={500}
-          />
-        </View>
-      </View>
-      <MessageInput onSubmit={handleMessageInputSubmit} />
-    </KeyboardAvoidingView>
+        <MessageInput onSubmit={handleMessageInputSubmit} />
+      </KeyboardAvoidingView>
+    </>
   );
 };
 

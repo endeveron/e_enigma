@@ -1,6 +1,6 @@
-import { BASE_HEADERS } from '@/src/constants';
-import { getApiBaseUrl } from '@/src/functions/helpers';
-import { AuthData } from '@/src/types/auth';
+import { BASE_HEADERS } from '@/constants';
+import { getApiBaseUrl } from '@/functions/helpers';
+import { AuthData } from '@/types/auth';
 import {
   CreateMessageReqData,
   EncryptedMessage,
@@ -9,8 +9,8 @@ import {
   RoomItem,
   RoomMember,
   UserItem,
-} from '@/src/types/chat';
-import { Result } from '@/src/types/common';
+} from '@/types/chat';
+import { Result } from '@/types/common';
 
 const apiBaseUrl = getApiBaseUrl();
 

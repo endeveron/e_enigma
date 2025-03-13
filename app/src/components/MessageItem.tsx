@@ -3,11 +3,11 @@ import FontAwesomeIcon from '@expo/vector-icons/FontAwesome5';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 
-import { Text } from '@/src/components/Text';
-import { useSocket } from '@/src/context/SocketProvider';
-import { logMessage } from '@/src/functions/helpers';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { MessageItem as TMessageItem } from '@/src/types/chat';
+import { Text } from '@/components/Text';
+import { useSocket } from '@/context/SocketProvider';
+import { logMessage } from '@/functions/helpers';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { MessageItem as TMessageItem } from '@/types/chat';
 
 const MessageItem = ({
   id,

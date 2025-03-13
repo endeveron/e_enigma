@@ -4,7 +4,7 @@ import express, { Application, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import { Server } from 'http';
 
-import { mongoDb } from './db/mongo';
+import { mongoDB } from './db/mongo';
 import { handleInvitationAnswer, handleMessageReport } from './functions/chat';
 import logger from './helpers/logger';
 import { getSocketServer, initSocketServer } from './lib/socketio';
@@ -12,6 +12,7 @@ import authRoutes from './routes/auth';
 import chatRoutes from './routes/chat';
 import userRoutes from './routes/user';
 import { InvitationAnswerData, MessageEventData } from './types/chat';
+import { updateUserOnlineStatus } from './functions/user';
 
 const API_VERSION = '1';
 const API = `/api/v${API_VERSION}`;
@@ -97,8 +98,6 @@ const connectToSocket = async (server: Server): Promise<void> => {
 
     // Socket event handlers
     io.on('connection', (socket) => {
-      logger.info(`Socket connected: ${socket.id}`);
-
       socket.on('invitation:answer', (data: InvitationAnswerData) => {
         try {
           handleInvitationAnswer(data);
@@ -114,13 +113,7 @@ const connectToSocket = async (server: Server): Promise<void> => {
           logger.error(`Error handling message report: ${error}`);
         }
       });
-
-      socket.on('disconnect', () => {
-        logger.info(`Socket disconnected: ${socket.id}`);
-      });
     });
-
-    logger.info('Socket.IO server initialized');
   } catch (error) {
     logger.error(`Failed to initialize Socket.IO: ${error}`);
     throw error;
@@ -128,7 +121,7 @@ const connectToSocket = async (server: Server): Promise<void> => {
 };
 
 const connectToDatabase = async (): Promise<void> => {
-  const errorMessage = await mongoDb.connect();
+  const errorMessage = await mongoDB.connect();
   if (errorMessage) throw new Error(errorMessage);
 };
 
@@ -173,7 +166,7 @@ const setupShutdownHandlers = (server: Server): void => {
       });
     }
 
-    await mongoDb.disconnect();
+    await mongoDB.disconnect();
 
     logger.info('Server closed');
     process.exit(0);

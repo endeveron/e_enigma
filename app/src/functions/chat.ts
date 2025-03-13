@@ -1,14 +1,14 @@
-import { KEY_CAN_DECRYPT_FROM_TIMESTAMP } from '@/src/constants/store';
-import { decryptMessage } from '@/src/functions/encryption';
-import { logMessage } from '@/src/functions/helpers';
-import { getStorageNumber, setStorageNumber } from '@/src/functions/store';
+import { KEY_CAN_DECRYPT_FROM_TIMESTAMP } from '@/constants/store';
+import { decryptMessage } from '@/functions/encryption';
+import { logMessage } from '@/functions/helpers';
+import { getStorageNumber, setStorageNumber } from '@/functions/store';
 import {
   EncryptedMessage,
   Message,
   MessageEventData,
   MessageItem,
   SystemMessageCode,
-} from '@/src/types/chat';
+} from '@/types/chat';
 
 export const createMessageReport = ({
   message,

@@ -2,12 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Button } from '@/src/components/Button';
-import { FormField } from '@/src/components/FormField';
+import { Button } from '@/components/Button';
+import { FormField } from '@/components/FormField';
 import {
   ResetPswdStep2FormData,
   resetPswdStep2Schema,
-} from '@/src/utils/validation';
+} from '@/utils/validation';
 
 const ResetPswdStep2 = ({
   onSubmit,

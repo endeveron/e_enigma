@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import RoomListItem from '@/src/components/RoomItem';
-import ScreenNotification from '@/src/components/ScreenNotification';
-import { useChat } from '@/src/context/ChatProvider';
-import { getRoomMemberMap } from '@/src/functions/db';
-import { RoomItem, RoomMemberMapItem } from '@/src/types/chat';
+import RoomListItem from '@/components/RoomItem';
+import ScreenNotification from '@/components/ScreenNotification';
+import { useChat } from '@/context/ChatProvider';
+import { getRoomMemberMap } from '@/functions/db';
+import { RoomItem, RoomMemberMapItem } from '@/types/chat';
 
 type RoomListProops = {
   roomItems: RoomItem[];

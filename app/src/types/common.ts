@@ -1,8 +1,3 @@
-export type Screen = {
-  name: string;
-  title?: string;
-};
-
 export type Status = { success: boolean };
 
 export type Result<T> = {

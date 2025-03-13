@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export const Button = ({
   title,

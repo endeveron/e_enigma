@@ -4,14 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { Button } from '@/src/components/Button';
-import ResetPswdStep1 from '@/src/components/reset-password/ResetPswdStep1';
-import ResetPswdStep2 from '@/src/components/reset-password/ResetPswdStep2';
-import { Text } from '@/src/components/Text';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { useToast } from '@/src/hooks/useToast';
-import { wait } from '@/src/functions/helpers';
-import { postForgotPassword, postResetPassword } from '@/src/services/auth';
+import { Button } from '@/components/Button';
+import ResetPswdStep1 from '@/components/reset-password/ResetPswdStep1';
+import ResetPswdStep2 from '@/components/reset-password/ResetPswdStep2';
+import { Text } from '@/components/Text';
+import { wait } from '@/functions/helpers';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { postForgotPassword, postResetPassword } from '@/services/auth';
 
 type Notification = {
   title: string;

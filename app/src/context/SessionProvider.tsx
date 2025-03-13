@@ -7,29 +7,29 @@ import {
   useState,
 } from 'react';
 
-import { MAIN_REDIRECT_URL } from '@/src/constants';
+import { MAIN_REDIRECT_URL } from '@/constants';
 import {
   getSecureStoreItem,
   setSecureStoreItem,
   deleteSecureStoreItem,
-} from '@/src/functions/store';
-import { useToast } from '@/src/hooks/useToast';
-import { postSignIn, postSignUp } from '@/src/services/auth';
+} from '@/functions/store';
+import { useToast } from '@/hooks/useToast';
+import { postSignIn, postSignUp } from '@/services/auth';
 import {
   AuthCredentials,
   AuthSession,
   EncryptionKeypair,
   SessionContext as TSessionContext,
   UserAuthData,
-} from '@/src/types/auth';
-import { logMessage } from '@/src/functions/helpers';
-import { generateEncryptionKeys } from '@/src/functions/encryption';
+} from '@/types/auth';
+import { logMessage } from '@/functions/helpers';
+import { generateEncryptionKeys } from '@/functions/encryption';
 import {
   KEY_AUTH_DATA,
   KEY_PUBLIC_KEY,
   KEY_SECRET_KEY,
   KEY_USER_ID_LIST,
-} from '@/src/constants/store';
+} from '@/constants/store';
 
 type EncryptionKeys = {
   publicKeyBase64: string;

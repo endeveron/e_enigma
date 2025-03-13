@@ -1,4 +1,4 @@
-import { UserItem } from '@/src/types/chat';
+import { UserItem } from '@/types/chat';
 
 export type InvitationType = 'sent' | 'recieved';
 

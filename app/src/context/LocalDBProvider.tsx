@@ -1,16 +1,16 @@
 import * as SQLite from 'expo-sqlite';
 import { PropsWithChildren, useEffect } from 'react';
 
-import { LOCAL_DB_NAME } from '@/src/constants';
-import { KEY_DB_TABLES_CREATED } from '@/src/constants/store';
+import { LOCAL_DB_NAME } from '@/constants';
+import { KEY_DB_TABLES_CREATED } from '@/constants/store';
 import {
   createInvitationTable,
   createLogTable,
   createMessageTable,
   createRoomMemberTable,
   createRoomTable,
-} from '@/src/functions/db';
-import { checkStorageItem, setStorageItem } from '@/src/functions/store';
+} from '@/functions/db';
+import { checkStorageItem, setStorageItem } from '@/functions/store';
 
 const DBManager = ({ children }: PropsWithChildren) => {
   const checkTables = async () => {

@@ -6,12 +6,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { Button } from '@/src/components/Button';
-import { FormField } from '@/src/components/FormField';
-import { Text } from '@/src/components/Text';
-import { AUTH_EMAIL, AUTH_PASSWORD, MAIN_REDIRECT_URL } from '@/src/constants';
-import { KEY_DATA_FETCHED, KEY_USER_ID_LIST } from '@/src/constants/store';
-import { useSession } from '@/src/context/SessionProvider';
+import { Button } from '@/components/Button';
+import { FormField } from '@/components/FormField';
+import { Text } from '@/components/Text';
+import { AUTH_EMAIL, AUTH_PASSWORD, MAIN_REDIRECT_URL } from '@/constants';
+import { KEY_DATA_FETCHED, KEY_USER_ID_LIST } from '@/constants/store';
+import { useSession } from '@/context/SessionProvider';
 import {
   createInvitationTable,
   createLogTable,
@@ -19,18 +19,18 @@ import {
   createRoomMemberTable,
   createRoomTable,
   deleteAllTables,
-} from '@/src/functions/db';
-import { logMessage } from '@/src/functions/helpers';
+} from '@/functions/db';
+import { logMessage } from '@/functions/helpers';
 import {
   deleteSecureStoreItem,
   deleteStorageItem,
   getSecureStoreItem,
   setSecureStoreItem,
-} from '@/src/functions/store';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { useToast } from '@/src/hooks/useToast';
-import { reset } from '@/src/services/chat';
-import { SignInFormData, signInSchema } from '@/src/utils/validation';
+} from '@/functions/store';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { useToast } from '@/hooks/useToast';
+import { reset } from '@/services/chat';
+import { SignInFormData, signInSchema } from '@/utils/validation';
 
 const SignIn = () => {
   const { isLoading, signIn } = useSession();
@@ -73,10 +73,6 @@ const SignIn = () => {
         'error'
       );
     }
-  };
-
-  const handleLeaveHiddenMode = () => {
-    // router.replace(LEAVE_REDIRECT_URL);
   };
 
   const handleToggleDevMode = () => {

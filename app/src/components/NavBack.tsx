@@ -2,7 +2,7 @@ import FeatherIcon from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 
-import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const NavBack = ({ onPress }: { onPress?: () => void }) => {
   const router = useRouter();

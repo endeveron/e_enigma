@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { Button } from '@/src/components/Button';
-import { FormField } from '@/src/components/FormField';
-import { deleteMessage } from '@/src/functions/db';
-import { useToast } from '@/src/hooks/useToast';
+import { Button } from '@/components/Button';
+import { FormField } from '@/components/FormField';
+import { deleteMessage } from '@/functions/db';
+import { useToast } from '@/hooks/useToast';
 
 // Removes message from local db
 const RemoveMessage = () => {

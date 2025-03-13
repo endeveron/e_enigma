@@ -2,7 +2,7 @@ import FeatherIcon from '@expo/vector-icons/Feather';
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 
-import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 export type SearchInputProps = {
   onSearch: (value: string) => void;

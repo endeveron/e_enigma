@@ -26,21 +26,21 @@ const initSocketServer = (httpServer: any): Server => {
     if (userId) {
       // Assign the userId to socket.data
       socket.data.userId = userId;
-      // logger.info(`User ID ${socket.data.userId} added to socket ${socket.id}`);
+      logger.info(`Connected socket ${socket.id}. User ID: ${userId}`);
 
       // Set user.isOnline to true in db
       updateUserOnlineStatus(userId, true);
     } else {
-      logger.error(`No user ID provided during connection`);
+      logger.info(`Connected socket ${socket.id}`);
     }
 
-    // Connection is opened
-    logger.info(`Connected socket ${socket.id}`);
+    // Emitting an event 'userIdAssigned' that allows the client-side code
+    // to receive the userId assigned to that particular socket connection
     socket.emit('userIdAssigned', { userId: socket.data.userId });
 
     // Connection is closed
     socket.conn.on('close', (reason) => {
-      logger.warning(`Disconnected socket ${socket.id}. Reason: ${reason}`);
+      logger.info(`Disconnected socket ${socket.id}. Reason: ${reason}`);
 
       // Set user.isOnline to false in db
       const userId = socket.data.userId as string;
@@ -49,6 +49,8 @@ const initSocketServer = (httpServer: any): Server => {
       }
     });
   });
+
+  logger.info('Socket.IO server initialized');
 
   return io;
 };

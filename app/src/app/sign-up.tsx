@@ -6,19 +6,19 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { Button } from '@/src/components/Button';
-import { FormField } from '@/src/components/FormField';
-import { Text } from '@/src/components/Text';
+import { Button } from '@/components/Button';
+import { FormField } from '@/components/FormField';
+import { Text } from '@/components/Text';
 import {
   AUTH_EMAIL,
   AUTH_NAME,
   AUTH_PASSWORD,
   MAIN_REDIRECT_URL,
-} from '@/src/constants';
-import { useSession } from '@/src/context/SessionProvider';
-import { logMessage } from '@/src/functions/helpers';
-import { useToast } from '@/src/hooks/useToast';
-import { SignUpFormData, signUpSchema } from '@/src/utils/validation';
+} from '@/constants';
+import { useSession } from '@/context/SessionProvider';
+import { logMessage } from '@/functions/helpers';
+import { useToast } from '@/hooks/useToast';
+import { SignUpFormData, signUpSchema } from '@/utils/validation';
 
 const SignUp = () => {
   const router = useRouter();

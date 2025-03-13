@@ -2,7 +2,7 @@ import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
 import { useState } from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 
-import { useThemeColor } from '@/src/hooks/useThemeColor';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 type Props = {
   onSubmit: (value: string) => void;

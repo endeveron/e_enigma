@@ -4,11 +4,8 @@ import {
   SQLiteStatement,
 } from 'expo-sqlite';
 
-import { LOCAL_DB_NAME } from '@/src/constants';
-import {
-  convertTableRowToMessageItem,
-  logMessage,
-} from '@/src/functions/helpers';
+import { LOCAL_DB_NAME } from '@/constants';
+import { convertTableRowToMessageItem, logMessage } from '@/functions/helpers';
 import {
   InvitationType,
   InvitatoionMapItem,
@@ -22,7 +19,7 @@ import {
   RoomMember,
   RoomMemberMapItem,
   UserItem,
-} from '@/src/types/chat';
+} from '@/types/chat';
 
 let dbInstance: SQLiteDatabase | null = null;
 

@@ -10,14 +10,14 @@ import {
   KEY_CAN_DECRYPT_FROM_TIMESTAMP,
   KEY_SECRET_KEY,
   KEY_USER_ID_LIST,
-} from '@/src/constants/store';
-import { logMessage } from '@/src/functions/helpers';
+} from '@/constants/store';
+import { logMessage } from '@/functions/helpers';
 import {
   getSecureStoreItem,
   getStorageNumber,
   setSecureStoreItem,
   setStorageNumber,
-} from '@/src/functions/store';
+} from '@/functions/store';
 import {
   CreateMessageReqData,
   DecryptedMessageData,
@@ -25,9 +25,9 @@ import {
   Message,
   MessageDate,
   MessageItem,
-} from '@/src/types/chat';
-import { EncryptionKeypair } from '@/src/types/auth';
-import { configureMessageDate } from '@/src/functions/chat';
+} from '@/types/chat';
+import { EncryptionKeypair } from '@/types/auth';
+import { configureMessageDate } from '@/functions/chat';
 
 // Set the PRNG for tweetnacl
 setPRNG((x: Uint8Array, n: number) => {

@@ -4,7 +4,7 @@
     "slug": "enigma",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "scheme": "enigma-messenger",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,8 +13,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon_colored.png",
-        "monochromeImage": "./assets/images/icon_monochrome.png",
+        "foregroundImage": "./src/assets/images/icon_colored.png",
+        "monochromeImage": "./src/assets/images/icon_monochrome.png",
         "backgroundColor": "#000812"
       },
       "package": "com.enigmatium.enigma",
@@ -26,7 +26,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#000812",
-          "image": "./assets/images/logo.png",
+          "image": "./src/assets/images/logo.png",
           "imageWidth": 192
         }
       ],

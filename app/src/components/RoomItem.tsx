@@ -1,10 +1,10 @@
 import { useRouter } from 'expo-router';
 import { TouchableOpacity, View } from 'react-native';
 
-import { Text } from '@/src/components/Text';
-import { logMessage } from '@/src/functions/helpers';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { RoomMemberMapItem, RoomItem as TRoomItem } from '@/src/types/chat';
+import { Text } from '@/components/Text';
+import { logMessage } from '@/functions/helpers';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { RoomMemberMapItem, RoomItem as TRoomItem } from '@/types/chat';
 
 type Props = {
   data: TRoomItem;

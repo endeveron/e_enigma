@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as SystemUI from 'expo-system-ui';
 import { useEffect } from 'react';
@@ -11,28 +11,19 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 
-import { StatusBar } from '@/src/components/StatusBar';
-import { colors } from '@/src/constants/colors';
-import EventProvider from '@/src/context/EventProvider';
-import LocalDBProvider from '@/src/context/LocalDBProvider';
-import SessionProvider from '@/src/context/SessionProvider';
-import { useTheme } from '@/src/hooks/useTheme';
-import { Screen } from '@/src/types/common';
+import { StatusBar } from '@/components/StatusBar';
+import { colors } from '@/constants/colors';
+import EventProvider from '@/context/EventProvider';
+import LocalDBProvider from '@/context/LocalDBProvider';
+import SessionProvider from '@/context/SessionProvider';
+import { useTheme } from '@/hooks/useTheme';
 
-import '@/src/styles/global.css';
+import '@/styles/global.css';
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.error,
   strict: false,
 });
-
-const screens: Screen[] = [
-  { name: '(screens)' },
-  { name: 'sign-in', title: 'Sign In' },
-  { name: 'sign-up', title: 'Sign Up' },
-  { name: 'reset-password', title: 'Reset Password' },
-  { name: '+not-found', title: 'Not Found' },
-];
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -87,21 +78,8 @@ export default function RootLayout() {
         <LocalDBProvider>
           <EventProvider>
             <SessionProvider>
-              <Stack>
-                {screens.map((screen: Screen) => (
-                  <Stack.Screen
-                    key={screen.name}
-                    name={screen.name}
-                    options={{
-                      headerShown: false,
-                      contentStyle: {
-                        backgroundColor: colors[theme].background,
-                      },
-                    }}
-                  />
-                ))}
-              </Stack>
-              <StatusBar />
+              <Slot />
+              <StatusBar style={'light'} />
             </SessionProvider>
           </EventProvider>
         </LocalDBProvider>

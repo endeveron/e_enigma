@@ -13,14 +13,14 @@ import {
   KEY_CAN_DECRYPT_FROM_TIMESTAMP,
   KEY_DATA_FETCHED,
   KEY_PUBLIC_KEY,
-} from '@/src/constants/store';
-import { EventType, useEvent } from '@/src/context/EventProvider';
-import { useSession } from '@/src/context/SessionProvider';
+} from '@/constants/store';
+import { EventType, useEvent } from '@/context/EventProvider';
+import { useSession } from '@/context/SessionProvider';
 import {
   configureMessageDate,
   createMessageReport,
   handleRecievedMessages,
-} from '@/src/functions/chat';
+} from '@/functions/chat';
 import {
   deleteInvitation as deleteInvitationFromLocalDb,
   getInvitations as getInvitationsFromLocalDb,
@@ -36,20 +36,20 @@ import {
   saveChatDataInLocalDb,
   saveMessagesInLocalDb,
   updateMessageMetadataOnEvent,
-} from '@/src/functions/db';
+} from '@/functions/db';
 import {
   createAndStoreSharedKey,
   decryptMessage,
   encryptMessage,
   updateSharedKey,
-} from '@/src/functions/encryption';
-import { logMessage } from '@/src/functions/helpers';
+} from '@/functions/encryption';
+import { logMessage } from '@/functions/helpers';
 import {
   checkStorageItem,
   getSecureStoreItem,
   getStorageNumber,
   setStorageItem,
-} from '@/src/functions/store';
+} from '@/functions/store';
 import {
   deleteInvitation as deleteInvitationFromRemoteDb,
   deleteMessage,
@@ -59,7 +59,7 @@ import {
   getRooms,
   postRoom,
   sendMessage,
-} from '@/src/services/chat';
+} from '@/services/chat';
 import {
   EncryptedMessage,
   InvitationAnswerData,
@@ -72,7 +72,7 @@ import {
   RoomMemberMapItem,
   SystemMessageCode,
   UserItem,
-} from '@/src/types/chat';
+} from '@/types/chat';
 
 type TChatContext = {
   newMessageMap: Map<string, string[]>;

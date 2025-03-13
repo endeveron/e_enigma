@@ -1,7 +1,7 @@
-import { CUR_API_VERSION, SERVER_URL } from '@/src/constants';
-import { consoleClors } from '@/src/constants/colors';
-import { LocalDBMessage, MessageItem } from '@/src/types/chat';
-import { LogType } from '@/src/types/common';
+import { CUR_API_VERSION, SERVER_URL } from '@/constants';
+import { consoleClors } from '@/constants/colors';
+import { LocalDBMessage, MessageItem } from '@/types/chat';
+import { LogType } from '@/types/common';
 
 const { cyan, green, gray, red, yellow, reset } = consoleClors;
 

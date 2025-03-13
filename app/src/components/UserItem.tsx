@@ -1,7 +1,7 @@
-import { Button } from '@/src/components/Button';
-import { Text } from '@/src/components/Text';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { InvitatoionMapItem, UserItemExt } from '@/src/types/chat';
+import { Button } from '@/components/Button';
+import { Text } from '@/components/Text';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { InvitatoionMapItem, UserItemExt } from '@/types/chat';
 import { View } from 'react-native';
 
 type Props = {

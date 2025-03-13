@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { Text } from '@/src/components/Text';
+import { Text } from '@/components/Text';
 
 type ScreenNotificationProps = {
   message: string;

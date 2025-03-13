@@ -1,4 +1,4 @@
-import { EVENT_HISTORY_LENGTH } from '@/src/constants';
+import { EVENT_HISTORY_LENGTH } from '@/constants';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 export enum EventType {

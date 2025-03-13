@@ -52,7 +52,7 @@ const disconnect = async (): Promise<MongoDBConnectionResult> => {
 };
 
 // Public API
-export const mongoDb = {
+export const mongoDB = {
   connect,
   disconnect,
   isConnected: (): boolean => {

@@ -9,10 +9,10 @@ import {
   View,
 } from 'react-native';
 
-import MessageItem from '@/src/components/MessageItem';
-import { Text } from '@/src/components/Text';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { MessageItem as TMessageItem } from '@/src/types/chat';
+import MessageItem from '@/components/MessageItem';
+import { Text } from '@/components/Text';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { MessageItem as TMessageItem } from '@/types/chat';
 
 type Section = {
   title: string;

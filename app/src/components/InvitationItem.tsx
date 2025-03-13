@@ -2,9 +2,9 @@ import FeatherIcon from '@expo/vector-icons/Feather';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
-import { Text } from '@/src/components/Text';
-import { useThemeColor } from '@/src/hooks/useThemeColor';
-import { UserItem } from '@/src/types/chat';
+import { Text } from '@/components/Text';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { UserItem } from '@/types/chat';
 
 type Props = {
   data: UserItem;

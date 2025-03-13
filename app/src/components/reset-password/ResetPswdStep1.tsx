@@ -3,12 +3,12 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { Button } from '@/src/components/Button';
-import { FormField } from '@/src/components/FormField';
+import { Button } from '@/components/Button';
+import { FormField } from '@/components/FormField';
 import {
   ResetPswdStep1FormData,
   resetPswdStep1Schema,
-} from '@/src/utils/validation';
+} from '@/utils/validation';
 
 const ResetPswdStep1 = ({ onSubmit }: { onSubmit: (data: string) => void }) => {
   const router = useRouter();

@@ -1,13 +1,14 @@
+import { Stack } from 'expo-router';
 import { FlatList, View } from 'react-native';
 
-import InvitationItem from '@/src/components/InvitationItem';
-import NavBack from '@/src/components/NavBack';
-import Title from '@/src/components/Title';
-import { useChat } from '@/src/context/ChatProvider';
-import { useSession } from '@/src/context/SessionProvider';
-import { useSocket } from '@/src/context/SocketProvider';
-import { logMessage } from '@/src/functions/helpers';
-import { UserItem } from '@/src/types/chat';
+import InvitationItem from '@/components/InvitationItem';
+import NavBack from '@/components/NavBack';
+import Title from '@/components/Title';
+import { useChat } from '@/context/ChatProvider';
+import { useSession } from '@/context/SessionProvider';
+import { useSocket } from '@/context/SocketProvider';
+import { logMessage } from '@/functions/helpers';
+import { UserItem } from '@/types/chat';
 
 const InvitationsScreen = () => {
   const { session } = useSession();
@@ -50,24 +51,27 @@ const InvitationsScreen = () => {
   };
 
   return (
-    <View className="flex-1 pt-14">
-      <View className="h-16 flex-row items-center gap-4 px-4 mb-2">
-        <NavBack />
-        <Title title="Invitations" />
-      </View>
+    <>
+      <Stack.Screen />
+      <View className="flex-1 pt-14">
+        <View className="h-16 flex-row items-center gap-4 px-4 mb-2">
+          <NavBack />
+          <Title title="Invitations" />
+        </View>
 
-      <FlatList
-        data={recievedInvitations}
-        renderItem={(data) => (
-          <InvitationItem
-            data={data.item}
-            onAccept={() => handleAcceptInvitation(data.item)}
-            onReject={() => handleRejectInvitation(data.item)}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+        <FlatList
+          data={recievedInvitations}
+          renderItem={(data) => (
+            <InvitationItem
+              data={data.item}
+              onAccept={() => handleAcceptInvitation(data.item)}
+              onReject={() => handleRejectInvitation(data.item)}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+    </>
   );
 };
 

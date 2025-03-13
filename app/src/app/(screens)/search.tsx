@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
-import ScreenNotification from '@/src/components/ScreenNotification';
-import UserListItem from '@/src/components/UserItem';
-import { useChat } from '@/src/context/ChatProvider';
-import { useSession } from '@/src/context/SessionProvider';
-import { getInvitationMap, insertInvitations } from '@/src/functions/db';
-import { logMessage } from '@/src/functions/helpers';
-import { inviteUserToChat } from '@/src/services/chat';
-import { searchUser } from '@/src/services/user';
-import { InvitatoionMapItem, UserItem, UserItemExt } from '@/src/types/chat';
-import SearchInput from '@/src/components/SearchInput';
-import { EventType, useEvent } from '@/src/context/EventProvider';
-import { useRouter } from 'expo-router';
-import { useToast } from '@/src/hooks/useToast';
-import Title from '@/src/components/Title';
-import NavBack from '@/src/components/NavBack';
-import { MAIN_REDIRECT_URL } from '@/src/constants';
+import ScreenNotification from '@/components/ScreenNotification';
+import UserListItem from '@/components/UserItem';
+import { useChat } from '@/context/ChatProvider';
+import { useSession } from '@/context/SessionProvider';
+import { getInvitationMap, insertInvitations } from '@/functions/db';
+import { logMessage } from '@/functions/helpers';
+import { inviteUserToChat } from '@/services/chat';
+import { searchUser } from '@/services/user';
+import { InvitatoionMapItem, UserItem, UserItemExt } from '@/types/chat';
+import SearchInput from '@/components/SearchInput';
+import { EventType, useEvent } from '@/context/EventProvider';
+import { Stack, useRouter } from 'expo-router';
+import { useToast } from '@/hooks/useToast';
+import Title from '@/components/Title';
+import NavBack from '@/components/NavBack';
+import { MAIN_REDIRECT_URL } from '@/constants';
 
 const SearchScreen = () => {
   const router = useRouter();
@@ -123,40 +123,43 @@ const SearchScreen = () => {
   }, [event]);
 
   return (
-    <View className="flex-1 pt-14">
-      <View className="h-16 flex-row items-center gap-4 px-4 mb-2">
-        <NavBack />
-        <Title title="Create a room" />
-      </View>
+    <>
+      <Stack.Screen />
+      <View className="flex-1 pt-14">
+        <View className="h-16 flex-row items-center gap-4 px-4 mb-2">
+          <NavBack />
+          <Title title="Create a room" />
+        </View>
 
-      <SearchInput
-        onSearch={handleSearch}
-        placeholder="Find a chat buddy by email..."
-      />
-
-      {fetching ? (
-        <ScreenNotification message="Please wait" delay={1500} />
-      ) : null}
-
-      {items && items.length === 0 ? (
-        <ScreenNotification message="No matches found" delay={1000} />
-      ) : null}
-
-      {items && items.length > 0 ? (
-        <FlatList
-          className="py-2"
-          data={items}
-          renderItem={(data) => (
-            <UserListItem
-              data={data.item}
-              sentInvitationMap={sentInvitationMap}
-              onPress={handleInvite}
-            />
-          )}
-          keyExtractor={(item) => item.id}
+        <SearchInput
+          onSearch={handleSearch}
+          placeholder="Find a chat buddy by email..."
         />
-      ) : null}
-    </View>
+
+        {fetching ? (
+          <ScreenNotification message="Please wait" delay={1500} />
+        ) : null}
+
+        {items && items.length === 0 ? (
+          <ScreenNotification message="No matches found" delay={1000} />
+        ) : null}
+
+        {items && items.length > 0 ? (
+          <FlatList
+            className="py-2"
+            data={items}
+            renderItem={(data) => (
+              <UserListItem
+                data={data.item}
+                sentInvitationMap={sentInvitationMap}
+                onPress={handleInvite}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        ) : null}
+      </View>
+    </>
   );
 };
 

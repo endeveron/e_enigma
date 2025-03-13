@@ -1,7 +1,7 @@
-import { BASE_HEADERS } from '@/src/constants';
-import { getApiBaseUrl } from '@/src/functions/helpers';
-import { AuthCredentials, UserAuthData } from '@/src/types/auth';
-import { Result, Status } from '@/src/types/common';
+import { BASE_HEADERS } from '@/constants';
+import { getApiBaseUrl } from '@/functions/helpers';
+import { AuthCredentials, UserAuthData } from '@/types/auth';
+import { Result, Status } from '@/types/common';
 
 const apiBaseUrl = getApiBaseUrl();
 

@@ -7,11 +7,11 @@ import {
 } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-import { SERVER_URL } from '@/src/constants';
-import { useChat } from '@/src/context/ChatProvider';
-import { useSession } from '@/src/context/SessionProvider';
-import { logMessage } from '@/src/functions/helpers';
-import { EncryptedMessage } from '@/src/types/chat';
+import { SERVER_URL } from '@/constants';
+import { useChat } from '@/context/ChatProvider';
+import { useSession } from '@/context/SessionProvider';
+import { logMessage } from '@/functions/helpers';
+import { EncryptedMessage } from '@/types/chat';
 
 type TSocketContext = {
   getSocket: () => Socket | null;
